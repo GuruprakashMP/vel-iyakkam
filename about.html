@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>எங்களைப் பற்றி · வேல் இயக்கம்</title>
+<meta name="description" content="வேல் இயக்கம் எப்படி இயங்குகிறது, குறியீடு முறை ஏன், எப்படி நன்கொடை அளிப்பது — முழு விவரம்.">
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<main>
+  <section class="section section--tight">
+    <div class="wrap">
+
+      <div class="sec-head" data-i18n-title="abt.h1">
+        <h1 data-i18n="abt.h1"></h1>
+        <p data-i18n="abt.lead"></p>
+      </div>
+
+      <!-- How it works -->
+      <h2 style="margin-top:34px" data-i18n="abt.how.h2"></h2>
+      <div class="grid grid-2" style="margin-bottom:34px">
+        <div class="card"><div class="card-ico">1</div><h3 data-i18n="abt.s1.h"></h3><p class="muted small" data-i18n="abt.s1.p"></p></div>
+        <div class="card"><div class="card-ico">2</div><h3 data-i18n="abt.s2.h"></h3><p class="muted small" data-i18n="abt.s2.p"></p></div>
+        <div class="card"><div class="card-ico">3</div><h3 data-i18n="abt.s3.h"></h3><p class="muted small" data-i18n="abt.s3.p"></p></div>
+        <div class="card"><div class="card-ico">4</div><h3 data-i18n="abt.s4.h"></h3><p class="muted small" data-i18n="abt.s4.p"></p></div>
+      </div>
+
+      <!-- Why codes -->
+      <div class="card" style="background:var(--gold-100);margin-bottom:22px">
+        <h2 data-i18n="abt.code.h2"></h2>
+        <p class="muted" style="margin:0" data-i18n="abt.code.p"></p>
+      </div>
+
+      <!-- Promise -->
+      <div class="card" style="margin-bottom:34px">
+        <h2 data-i18n="abt.trans.h2"></h2>
+        <p class="muted" style="margin:0" data-i18n="abt.trans.p"></p>
+      </div>
+
+      <!-- Donate -->
+      <div class="grid grid-2">
+        <div class="card">
+          <h2 data-i18n="abt.donate.h2"></h2>
+          <p class="muted small" data-i18n="abt.donate.p"></p>
+          <div id="upiBox"></div>
+          <div style="margin-top:16px">
+            <a class="btn btn-solid btn-sm" id="joinBtn" href="#contact" data-i18n="home.join.cta"></a>
+          </div>
+        </div>
+
+        <div class="card" id="contact">
+          <h2 data-i18n="abt.contact.h2"></h2>
+          <p class="muted small" data-i18n="abt.contact.p"></p>
+          <div id="contactBox" class="grid" style="gap:10px"></div>
+          <div style="margin-top:16px">
+            <a class="btn btn-outline btn-sm" id="helpBtn" href="#contact" data-i18n="home.help.cta"></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  function renderUpi() {
+    var o = VI.cfg.org, box = document.getElementById('upiBox');
+    if (!o.upiId) {
+      box.innerHTML = '<div class="notice notice--info"><span class="notice-ico">ⓘ</span><span>' +
+        VI.esc(VI.t('abt.donate.none')) + '</span></div>';
+      return;
+    }
+    var link = 'upi://pay?pa=' + encodeURIComponent(o.upiId) +
+               '&pn=' + encodeURIComponent(o.upiPayeeName || o.nameEn) + '&cu=INR';
+    box.innerHTML =
+      '<div class="notice" style="align-items:center">' +
+        '<span class="notice-ico">₹</span>' +
+        '<span><strong class="mono" style="font-size:1.05rem">' + VI.esc(o.upiId) + '</strong><br>' +
+        '<span class="tiny">' + VI.esc(o.upiPayeeName || o.nameEn) + '</span></span>' +
+      '</div>' +
+      '<div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">' +
+        '<a class="btn btn-primary btn-sm" href="' + VI.esc(link) + '">UPI</a>' +
+        '<button class="btn btn-outline btn-sm" id="copyUpi" type="button">Copy</button>' +
+      '</div>';
+    var c = document.getElementById('copyUpi');
+    if (c) c.onclick = function () {
+      navigator.clipboard.writeText(o.upiId).then(function () {
+        c.textContent = '✓'; setTimeout(function () { c.textContent = 'Copy'; }, 1500);
+      });
+    };
+  }
+
+  function renderContact() {
+    var o = VI.cfg.org, out = [];
+    if (o.contactEmail) out.push('<a class="btn btn-outline btn-sm" style="justify-content:flex-start" href="mailto:' + VI.esc(o.contactEmail) + '">✉ ' + VI.esc(o.contactEmail) + '</a>');
+    if (o.contactPhone) out.push('<a class="btn btn-outline btn-sm" style="justify-content:flex-start" href="tel:' + VI.esc(o.contactPhone) + '">☎ ' + VI.esc(o.contactPhone) + '</a>');
+    if (o.whatsapp)     out.push('<a class="btn btn-outline btn-sm" style="justify-content:flex-start" href="https://wa.me/' + VI.esc(o.whatsapp) + '" target="_blank" rel="noopener">WhatsApp</a>');
+    document.getElementById('contactBox').innerHTML = out.join('');
+  }
+
+  function wireForms() {
+    if (VI.cfg.forms.joinDonor)   { var a = document.getElementById('joinBtn'); a.href = VI.cfg.forms.joinDonor; a.target = '_blank'; a.rel = 'noopener'; }
+    if (VI.cfg.forms.helpRequest) { var b = document.getElementById('helpBtn'); b.href = VI.cfg.forms.helpRequest; b.target = '_blank'; b.rel = 'noopener'; }
+  }
+
+  document.addEventListener('vi:ready', function () { renderUpi(); renderContact(); wireForms(); });
+  document.addEventListener('vi:langchange', function () { renderUpi(); });
+})();
+</script>
+</body>
+</html>

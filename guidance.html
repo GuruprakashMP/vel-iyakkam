@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>கல்வி வழிகாட்டி · வேல் இயக்கம்</title>
+<meta name="description" content="பன்னிரண்டாம் வகுப்புக்குப் பிறகு என்ன படிக்கலாம்? படிப்புகள், நுழைவுத் தேர்வுகள், உதவித்தொகைகள் — தெளிவான தமிழ் வழிகாட்டி.">
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<main>
+  <section class="section section--tight">
+    <div class="wrap">
+
+      <div class="sec-head" data-i18n-title="gui.h1">
+        <h1 data-i18n="gui.h1"></h1>
+        <p data-i18n="gui.lead"></p>
+      </div>
+
+      <div class="chips no-print" style="margin-bottom:24px" role="tablist">
+        <button class="chip" data-tab="courses" type="button" aria-pressed="true"  data-i18n="gui.tab.courses"></button>
+        <button class="chip" data-tab="exams"   type="button" aria-pressed="false" data-i18n="gui.tab.exams"></button>
+        <button class="chip" data-tab="scholar" type="button" aria-pressed="false" data-i18n="gui.tab.scholar"></button>
+        <button class="chip" data-tab="tips"    type="button" aria-pressed="false" data-i18n="gui.tab.tips"></button>
+      </div>
+
+      <div id="host">
+        <div class="empty"><div class="ico">⏳</div><span data-i18n="c.loading"></span></div>
+      </div>
+
+      <div class="card" style="margin-top:30px;background:var(--gold-100)">
+        <p class="muted" style="margin:0" data-i18n="gui.helpnote"></p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var G = null, tab = 'courses';
+
+  function load() {
+    fetch('data/guidance.json', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (j) { G = j; render(); })
+      .catch(function (e) {
+        console.error(e);
+        document.getElementById('host').innerHTML =
+          '<div class="notice"><span class="notice-ico">!</span><span>' + VI.esc(VI.t('c.error')) + '</span></div>';
+      });
+  }
+
+  function L(obj, field) {                     // pick the right language from an object
+    if (obj == null) return '';
+    if (typeof obj === 'string') return obj;
+    if (field) return obj[VI.lang === 'ta' ? field + 'Ta' : field + 'En'] || obj[field + 'Ta'] || '';
+    return obj[VI.lang] || obj.ta || '';
+  }
+
+  function renderCourses() {
+    return G.streams.map(function (s, i) {
+      var items = s.courses.map(function (c) {
+        var t = VI.lang === 'ta' ? c.ta : c.en;
+        var kv = [
+          [VI.t('gui.duration'),    L(c.duration)],
+          [VI.t('gui.eligibility'), L(c.eligibility)],
+          [VI.t('gui.exam'),        L(c.exam)],
+          [VI.t('gui.cost'),        L(c.cost)]
+        ].filter(function (p) { return p[1]; })
+         .map(function (p) { return '<span><b>' + VI.esc(p[0]) + ':</b> ' + VI.esc(p[1]) + '</span>'; })
+         .join('');
+        return '<div class="course-item">' +
+          '<h4>' + VI.esc(t.name) + '</h4>' +
+          '<p>' + VI.esc(t.desc) + '</p>' +
+          (t.career ? '<p class="tiny" style="color:var(--ink-3)"><b>' + VI.esc(VI.t('gui.career')) + ':</b> ' + VI.esc(t.career) + '</p>' : '') +
+          '<div class="kv">' + kv + '</div>' +
+        '</div>';
+      }).join('');
+
+      return '<details class="acc"' + (i === 0 ? ' open' : '') + '>' +
+        '<summary><span class="acc-ico">' + s.icon + '</span>' +
+          VI.esc(VI.lang === 'ta' ? s.ta : s.en) +
+          ' <span class="badge badge-info" style="margin-inline-start:8px">' + s.courses.length + '</span>' +
+        '</summary>' +
+        '<div class="acc-body">' + items + '</div>' +
+      '</details>';
+    }).join('');
+  }
+
+  function renderExams() {
+    return '<div class="grid grid-2">' + G.exams.map(function (e) {
+      return '<div class="card">' +
+        '<h3>' + VI.esc(e.name) + '</h3>' +
+        '<p class="muted small">' + VI.esc(VI.lang === 'ta' ? e.ta : e.en) + '</p>' +
+        (e.site ? '<a class="btn btn-outline btn-sm" href="' + VI.esc(e.site) + '" target="_blank" rel="noopener">' +
+                  VI.esc(e.site.replace(/^https?:\/\//, '')) + '</a>' : '') +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  function renderScholar() {
+    return '<div class="grid grid-2">' + G.scholarships.map(function (s) {
+      return '<div class="card">' +
+        '<h3>' + VI.esc(VI.lang === 'ta' ? s.ta : s.en) + '</h3>' +
+        '<p class="muted small">' + VI.esc(L(s, 'desc')) + '</p>' +
+        (s.site ? '<a class="btn btn-outline btn-sm" href="' + VI.esc(s.site) + '" target="_blank" rel="noopener">' +
+                  VI.esc(s.site.replace(/^https?:\/\//, '')) + '</a>' : '') +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  function renderTips() {
+    return '<div class="grid" style="gap:12px">' + G.tips.map(function (t, i) {
+      return '<div class="card" style="display:flex;gap:16px;align-items:start;padding:20px">' +
+        '<span class="acc-ico" style="font-weight:800">' + (i + 1) + '</span>' +
+        '<p style="margin:0">' + VI.esc(VI.lang === 'ta' ? t.ta : t.en) + '</p>' +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  function render() {
+    if (!G) return;
+    var host = document.getElementById('host');
+    host.innerHTML = tab === 'courses' ? renderCourses()
+                   : tab === 'exams'   ? renderExams()
+                   : tab === 'scholar' ? renderScholar()
+                   : renderTips();
+  }
+
+  document.addEventListener('vi:ready', function () {
+    document.querySelectorAll('[data-tab]').forEach(function (b) {
+      b.onclick = function () {
+        tab = b.getAttribute('data-tab');
+        document.querySelectorAll('[data-tab]').forEach(function (x) {
+          x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+        });
+        render();
+      };
+    });
+    load();
+  });
+
+  document.addEventListener('vi:langchange', render);
+})();
+</script>
+</body>
+</html>

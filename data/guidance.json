@@ -1,0 +1,323 @@
+{
+  "_note": "வேல் இயக்கம் — 12ஆம் வகுப்புக்குப் பிறகான வழிகாட்டி. கட்டணம், தேர்வு தேதிகள் ஆண்டுதோறும் மாறும். சேரும் முன் அதிகாரப்பூர்வ இணையதளத்தில் சரிபாருங்கள்.",
+  "_updated": "2026-08",
+
+  "streams": [
+    {
+      "id": "bio",
+      "icon": "🩺",
+      "ta": "உயிரியல் பிரிவு (Bio-Maths / Bio-Science)",
+      "en": "Biology group",
+      "courses": [
+        {
+          "ta": { "name": "MBBS — மருத்துவம்", "desc": "பொது மருத்துவர் ஆவதற்கான படிப்பு. 4½ ஆண்டு படிப்பு + 1 ஆண்டு கட்டாய பயிற்சி (இன்டர்ன்ஷிப்).", "career": "அரசு/தனியார் மருத்துவமனை மருத்துவர், PG சிறப்புப் படிப்பு" },
+          "en": { "name": "MBBS — Medicine", "desc": "To become a doctor. 4.5 years of study plus 1 year of compulsory internship.", "career": "Doctor in government or private hospital, then PG specialisation" },
+          "duration": { "ta": "5½ ஆண்டு", "en": "5.5 years" },
+          "eligibility": { "ta": "+2 உயிரியல், இயற்பியல், வேதியியல்", "en": "+2 with Biology, Physics, Chemistry" },
+          "exam": "NEET UG",
+          "cost": { "ta": "அரசு கல்லூரி மிகக் குறைவு · தனியார் மிக அதிகம்", "en": "Very low in government colleges · very high in private" }
+        },
+        {
+          "ta": { "name": "BDS — பல் மருத்துவம்", "desc": "பல் மருத்துவர் ஆவதற்கான படிப்பு. 4 ஆண்டு + 1 ஆண்டு பயிற்சி.", "career": "பல் மருத்துவமனை, சொந்த கிளினிக்" },
+          "en": { "name": "BDS — Dental", "desc": "To become a dentist. 4 years plus 1 year internship.", "career": "Dental hospital, own clinic" },
+          "duration": { "ta": "5 ஆண்டு", "en": "5 years" },
+          "eligibility": { "ta": "+2 உயிரியல் பிரிவு", "en": "+2 Biology group" },
+          "exam": "NEET UG",
+          "cost": { "ta": "அரசு குறைவு · தனியார் அதிகம்", "en": "Low in government · high in private" }
+        },
+        {
+          "ta": { "name": "BSMS / BAMS / BHMS — சித்தா, ஆயுர்வேதம், ஹோமியோ", "desc": "இந்திய மரபு மருத்துவப் படிப்புகள். சித்த மருத்துவம் தமிழ்நாட்டில் சிறப்பானது.", "career": "மரபு மருத்துவர், அரசு ஆயுஷ் மருத்துவமனை" },
+          "en": { "name": "BSMS / BAMS / BHMS — Siddha, Ayurveda, Homeopathy", "desc": "Indian traditional medicine degrees. Siddha is especially strong in Tamil Nadu.", "career": "Traditional medicine practitioner, government AYUSH hospitals" },
+          "duration": { "ta": "5½ ஆண்டு", "en": "5.5 years" },
+          "eligibility": { "ta": "+2 உயிரியல் பிரிவு", "en": "+2 Biology group" },
+          "exam": "NEET UG",
+          "cost": { "ta": "நடுத்தரம்", "en": "Moderate" }
+        },
+        {
+          "ta": { "name": "B.Sc Nursing — செவிலியர் படிப்பு", "desc": "வேலை வாய்ப்பு மிக அதிகம். வெளிநாட்டு வாய்ப்புகளும் உண்டு. ஆண், பெண் இருவரும் படிக்கலாம்.", "career": "மருத்துவமனை, வெளிநாட்டு வேலை, அரசு செவிலியர் பணி" },
+          "en": { "name": "B.Sc Nursing", "desc": "Very high job availability, including abroad. Open to both men and women.", "career": "Hospitals, overseas jobs, government nursing posts" },
+          "duration": { "ta": "4 ஆண்டு", "en": "4 years" },
+          "eligibility": { "ta": "+2 உயிரியல் பிரிவு, 17 வயது நிறைவு", "en": "+2 Biology group, completed 17 years" },
+          "exam": { "ta": "தமிழ்நாடு அரசு கலந்தாய்வு (மதிப்பெண் அடிப்படையில்)", "en": "Tamil Nadu government counselling (merit based)" },
+          "cost": { "ta": "அரசு குறைவு · தனியார் நடுத்தரம்", "en": "Low in government · moderate in private" }
+        },
+        {
+          "ta": { "name": "B.Pharm — மருந்தியல்", "desc": "மருந்து தயாரிப்பு, மருந்தகம், மருந்து ஆய்வு தொடர்பான படிப்பு.", "career": "மருந்தகம், மருந்து நிறுவனம், ஆய்வுக்கூடம்" },
+          "en": { "name": "B.Pharm — Pharmacy", "desc": "Study of medicine manufacture, dispensing and drug research.", "career": "Pharmacy, pharmaceutical companies, laboratories" },
+          "duration": { "ta": "4 ஆண்டு", "en": "4 years" },
+          "eligibility": { "ta": "+2 உயிரியல் அல்லது கணிதப் பிரிவு", "en": "+2 Biology or Maths group" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படையிலான கலந்தாய்வு", "en": "Merit-based counselling" },
+          "cost": { "ta": "நடுத்தரம்", "en": "Moderate" }
+        },
+        {
+          "ta": { "name": "BPT / BOT — இயன்முறை மருத்துவம்", "desc": "விபத்து, முதுமை, பக்கவாதம் போன்றவற்றுக்கான உடற்பயிற்சி சிகிச்சை.", "career": "மருத்துவமனை, விளையாட்டு அணி, சொந்த மையம்" },
+          "en": { "name": "BPT / BOT — Physiotherapy", "desc": "Rehabilitation therapy for accidents, ageing and paralysis.", "career": "Hospitals, sports teams, own therapy centre" },
+          "duration": { "ta": "4½ ஆண்டு", "en": "4.5 years" },
+          "eligibility": { "ta": "+2 உயிரியல் பிரிவு", "en": "+2 Biology group" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "நடுத்தரம்", "en": "Moderate" }
+        },
+        {
+          "ta": { "name": "B.Sc வேளாண்மை / தோட்டக்கலை", "desc": "தமிழ்நாடு வேளாண் பல்கலைக்கழகம் (TNAU) மற்றும் இணை கல்லூரிகள். அரசு வேலை வாய்ப்பு நல்லது.", "career": "வேளாண் அலுவலர், வங்கி வேளாண் அதிகாரி, சொந்த பண்ணை" },
+          "en": { "name": "B.Sc Agriculture / Horticulture", "desc": "Through TNAU and affiliated colleges. Good government job prospects.", "career": "Agricultural officer, bank agri-officer, own farm enterprise" },
+          "duration": { "ta": "4 ஆண்டு", "en": "4 years" },
+          "eligibility": { "ta": "+2 உயிரியல் / வேளாண்மைப் பிரிவு", "en": "+2 Biology or Agriculture group" },
+          "exam": { "ta": "TNAU கலந்தாய்வு", "en": "TNAU counselling" },
+          "cost": { "ta": "குறைவு – நடுத்தரம்", "en": "Low to moderate" }
+        },
+        {
+          "ta": { "name": "பாராமெடிக்கல் — BMLT, Radiology, OT Technology", "desc": "குறுகிய காலம், குறைந்த செலவு, விரைவான வேலை. வசதி குறைந்த குடும்பங்களுக்கு மிகச் சிறந்த தேர்வு.", "career": "ஆய்வகம், ஸ்கேன் மையம், அறுவை சிகிச்சை அறை உதவியாளர்" },
+          "en": { "name": "Paramedical — BMLT, Radiology, OT Technology", "desc": "Short duration, low cost, quick employment. An excellent option for families with limited means.", "career": "Diagnostic labs, scan centres, operation theatre technician" },
+          "duration": { "ta": "3 – 4 ஆண்டு", "en": "3 – 4 years" },
+          "eligibility": { "ta": "+2 உயிரியல் பிரிவு", "en": "+2 Biology group" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "குறைவு", "en": "Low" }
+        }
+      ]
+    },
+
+    {
+      "id": "maths",
+      "icon": "⚙️",
+      "ta": "கணிதப் பிரிவு (Maths – Physics – Chemistry)",
+      "en": "Maths group",
+      "courses": [
+        {
+          "ta": { "name": "B.E / B.Tech — பொறியியல்", "desc": "கணினி (CSE), மின்னணு (ECE), மின் (EEE), இயந்திரம் (Mech), கட்டிடம் (Civil) என பல பிரிவுகள். CSE / IT-க்கு வேலை வாய்ப்பு அதிகம்.", "career": "மென்பொருள் நிறுவனம், உற்பத்தி ஆலை, அரசு பொறியாளர் பணி" },
+          "en": { "name": "B.E / B.Tech — Engineering", "desc": "Many branches: Computer Science, ECE, EEE, Mechanical, Civil. CSE and IT currently have the most openings.", "career": "Software companies, manufacturing, government engineer posts" },
+          "duration": { "ta": "4 ஆண்டு", "en": "4 years" },
+          "eligibility": { "ta": "+2 கணிதம், இயற்பியல், வேதியியல்", "en": "+2 Maths, Physics, Chemistry" },
+          "exam": { "ta": "TNEA கலந்தாய்வு (+2 கட் ஆஃப்) · IIT/NIT-க்கு JEE", "en": "TNEA counselling on +2 cutoff · JEE for IITs/NITs" },
+          "cost": { "ta": "அரசு கல்லூரி குறைவு · தனியார் நடுத்தரம் முதல் அதிகம்", "en": "Low in government colleges · moderate to high in private" }
+        },
+        {
+          "ta": { "name": "B.Arch — கட்டிடக்கலை", "desc": "கட்டிட வடிவமைப்பு. படைப்பாற்றல் மற்றும் வரைதல் திறன் தேவை.", "career": "கட்டிடக் கலைஞர், நகர அமைப்பு, சொந்த நிறுவனம்" },
+          "en": { "name": "B.Arch — Architecture", "desc": "Building design. Needs creativity and drawing ability.", "career": "Architect, urban planning, own practice" },
+          "duration": { "ta": "5 ஆண்டு", "en": "5 years" },
+          "eligibility": { "ta": "+2 கணிதப் பிரிவு", "en": "+2 Maths group" },
+          "exam": "NATA",
+          "cost": { "ta": "நடுத்தரம் – அதிகம்", "en": "Moderate to high" }
+        },
+        {
+          "ta": { "name": "B.Sc — கணிதம் / இயற்பியல் / வேதியியல் / கணினி அறிவியல்", "desc": "செலவு குறைவு. பின்னர் M.Sc, B.Ed, ஆய்வு அல்லது போட்டித் தேர்வுக்குச் செல்லலாம்.", "career": "ஆசிரியர், ஆய்வாளர், வங்கி/அரசுத் தேர்வு" },
+          "en": { "name": "B.Sc — Maths / Physics / Chemistry / Computer Science", "desc": "Low cost. Can lead to M.Sc, B.Ed, research or competitive exams.", "career": "Teacher, researcher, bank and government exams" },
+          "duration": { "ta": "3 ஆண்டு", "en": "3 years" },
+          "eligibility": { "ta": "+2 கணிதப் பிரிவு", "en": "+2 Maths group" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "மிகக் குறைவு", "en": "Very low" }
+        },
+        {
+          "ta": { "name": "ஒருங்கிணைந்த M.Sc / M.Tech (5 ஆண்டு)", "desc": "IIT, NIT, மத்தியப் பல்கலைக்கழகங்களில் நேரடியாக முதுநிலைப் பட்டம்.", "career": "ஆய்வு, விஞ்ஞானி, உயர் தொழில்நுட்ப நிறுவனம்" },
+          "en": { "name": "Integrated M.Sc / M.Tech (5 years)", "desc": "Direct master's degree at IITs, NITs and central universities.", "career": "Research, scientist roles, high-end technology firms" },
+          "duration": { "ta": "5 ஆண்டு", "en": "5 years" },
+          "eligibility": { "ta": "+2 கணிதப் பிரிவு", "en": "+2 Maths group" },
+          "exam": "JEE / CUET / IISER Aptitude Test",
+          "cost": { "ta": "குறைவு (உதவித்தொகை உண்டு)", "en": "Low (scholarships available)" }
+        },
+        {
+          "ta": { "name": "கப்பல் படிப்பு — Marine Engineering / DNS", "desc": "கப்பலில் பணி. சம்பளம் மிக அதிகம். உடல் தகுதி மற்றும் கண் பார்வை சோதனை கட்டாயம்.", "career": "கப்பல் பொறியாளர், நேவிகேஷன் அதிகாரி" },
+          "en": { "name": "Merchant Navy — Marine Engineering / DNS", "desc": "Work on ships. Pay is very high. Physical fitness and eyesight tests are compulsory.", "career": "Marine engineer, navigating officer" },
+          "duration": { "ta": "1 – 4 ஆண்டு", "en": "1 – 4 years" },
+          "eligibility": { "ta": "+2 கணிதப் பிரிவு, ஆங்கிலத்தில் நல்ல மதிப்பெண்", "en": "+2 Maths group with good English marks" },
+          "exam": "IMU-CET",
+          "cost": { "ta": "அதிகம் (ஆனால் வருமானமும் அதிகம்)", "en": "High (but earnings are also high)" }
+        }
+      ]
+    },
+
+    {
+      "id": "commerce",
+      "icon": "📊",
+      "ta": "வணிகவியல் பிரிவு (Commerce)",
+      "en": "Commerce group",
+      "courses": [
+        {
+          "ta": { "name": "B.Com / B.Com (CA) / B.Com (Banking)", "desc": "செலவு மிகக் குறைவு, எங்கும் கிடைக்கும் படிப்பு. வங்கி மற்றும் அரசுத் தேர்வுகளுக்கு நல்ல அடித்தளம்.", "career": "கணக்காளர், வங்கி, தணிக்கை அலுவலகம்" },
+          "en": { "name": "B.Com / B.Com (CA) / B.Com (Banking)", "desc": "Very low cost and available everywhere. A good base for bank and government exams.", "career": "Accountant, banking, audit office" },
+          "duration": { "ta": "3 ஆண்டு", "en": "3 years" },
+          "eligibility": { "ta": "எந்தப் பிரிவிலும் +2 (வணிகவியல் சிறப்பு)", "en": "+2 in any group (Commerce preferred)" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "மிகக் குறைவு", "en": "Very low" }
+        },
+        {
+          "ta": { "name": "CA — பட்டயக் கணக்காளர்", "desc": "12ஆம் வகுப்புக்குப் பிறகு Foundation தேர்விலிருந்து தொடங்கலாம். கடினமான ஆனால் மிக மதிப்புமிக்க தகுதி. தேர்வுக் கட்டணம் மட்டுமே செலவு.", "career": "தணிக்கையாளர், நிதி ஆலோசகர், சொந்த அலுவலகம்" },
+          "en": { "name": "CA — Chartered Accountant", "desc": "Start with the Foundation exam right after 12th. Hard but highly valued. The only real cost is exam fees.", "career": "Auditor, finance consultant, own practice" },
+          "duration": { "ta": "4 – 5 ஆண்டு", "en": "4 – 5 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி (எந்தப் பிரிவும்)", "en": "Pass in +2 (any group)" },
+          "exam": "CA Foundation (ICAI)",
+          "cost": { "ta": "மிகக் குறைவு — ஏழை மாணவர்களுக்கு சிறந்த வாய்ப்பு", "en": "Very low — an excellent route for students with limited means" }
+        },
+        {
+          "ta": { "name": "CS / CMA — நிறுவனச் செயலர் / செலவு கணக்கியல்", "desc": "CA போன்றே தொழில்முறைத் தகுதி. வேலைக்குச் சென்றபடியே படிக்கலாம்.", "career": "நிறுவனச் செயலர், செலவு கணக்காளர்" },
+          "en": { "name": "CS / CMA — Company Secretary / Cost Accountancy", "desc": "Professional qualifications like CA. Can be studied while working.", "career": "Company secretary, cost accountant" },
+          "duration": { "ta": "3 – 4 ஆண்டு", "en": "3 – 4 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": "CSEET / CMA Foundation",
+          "cost": { "ta": "குறைவு", "en": "Low" }
+        },
+        {
+          "ta": { "name": "BBA — வணிக நிர்வாகம்", "desc": "நிர்வாகம், சந்தைப்படுத்தல், மனிதவள மேலாண்மை அறிமுகம். பின்னர் MBA படிக்கலாம்.", "career": "நிர்வாக உதவியாளர், விற்பனை, சொந்தத் தொழில்" },
+          "en": { "name": "BBA — Business Administration", "desc": "Introduction to management, marketing and HR. Usually followed by an MBA.", "career": "Management trainee, sales, own business" },
+          "duration": { "ta": "3 ஆண்டு", "en": "3 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "குறைவு – நடுத்தரம்", "en": "Low to moderate" }
+        }
+      ]
+    },
+
+    {
+      "id": "arts",
+      "icon": "📚",
+      "ta": "கலைப் பிரிவு (Arts & Humanities)",
+      "en": "Arts group",
+      "courses": [
+        {
+          "ta": { "name": "BA — தமிழ் / ஆங்கிலம் / வரலாறு / பொருளியல்", "desc": "செலவு மிகக் குறைவு. TNPSC, UPSC போன்ற போட்டித் தேர்வுகளுக்கு மிகச் சிறந்த அடித்தளம்.", "career": "ஆசிரியர், அரசுப் பணி, மொழிபெயர்ப்பு, பத்திரிகை" },
+          "en": { "name": "BA — Tamil / English / History / Economics", "desc": "Very low cost. An excellent base for TNPSC, UPSC and other competitive exams.", "career": "Teacher, government service, translation, journalism" },
+          "duration": { "ta": "3 ஆண்டு", "en": "3 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "மிகக் குறைவு", "en": "Very low" }
+        },
+        {
+          "ta": { "name": "BA LLB / BBA LLB — சட்டப் படிப்பு", "desc": "12ஆம் வகுப்புக்குப் பிறகு நேரடியாக 5 ஆண்டு ஒருங்கிணைந்த சட்டப் படிப்பு.", "career": "வழக்கறிஞர், நீதித்துறை, நிறுவன சட்ட ஆலோசகர்" },
+          "en": { "name": "BA LLB / BBA LLB — Law", "desc": "A 5-year integrated law degree taken directly after 12th.", "career": "Advocate, judiciary, corporate legal advisor" },
+          "duration": { "ta": "5 ஆண்டு", "en": "5 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": { "ta": "CLAT · தமிழ்நாடு டாக்டர் அம்பேத்கர் சட்டப் பல்கலைக்கழக கலந்தாய்வு", "en": "CLAT · Tamil Nadu Dr Ambedkar Law University counselling" },
+          "cost": { "ta": "அரசு குறைவு", "en": "Low in government universities" }
+        },
+        {
+          "ta": { "name": "BSW — சமூகப் பணி", "desc": "சமூக நலம், அரசு சாரா நிறுவனங்களில் பணி. மக்களுக்குச் சேவை செய்ய விரும்புவோருக்கு ஏற்றது.", "career": "சமூகப் பணியாளர், NGO, மருத்துவமனை சமூகப் பிரிவு" },
+          "en": { "name": "BSW — Social Work", "desc": "Community welfare and NGO work. Suited to those who want to serve people.", "career": "Social worker, NGO roles, hospital medical social work" },
+          "duration": { "ta": "3 ஆண்டு", "en": "3 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "மிகக் குறைவு", "en": "Very low" }
+        },
+        {
+          "ta": { "name": "B.Sc உளவியல் / B.A இதழியல்", "desc": "உளவியல் ஆலோசனை மற்றும் ஊடகத் துறையில் வளர்ந்து வரும் வாய்ப்புகள்.", "career": "ஆலோசகர், செய்தியாளர், உள்ளடக்க எழுத்தாளர்" },
+          "en": { "name": "B.Sc Psychology / BA Journalism", "desc": "Growing opportunities in counselling and in media.", "career": "Counsellor, reporter, content writer" },
+          "duration": { "ta": "3 ஆண்டு", "en": "3 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "குறைவு", "en": "Low" }
+        },
+        {
+          "ta": { "name": "BHM — உணவகம் மற்றும் விடுதி மேலாண்மை", "desc": "நட்சத்திர விடுதிகள், கப்பல், வெளிநாட்டு வாய்ப்புகள்.", "career": "செஃப், விடுதி நிர்வாகம், கேட்டரிங் தொழில்" },
+          "en": { "name": "BHM — Hotel Management", "desc": "Star hotels, cruise ships and overseas opportunities.", "career": "Chef, hotel management, catering business" },
+          "duration": { "ta": "3 – 4 ஆண்டு", "en": "3 – 4 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": "NCHMCT JEE",
+          "cost": { "ta": "நடுத்தரம்", "en": "Moderate" }
+        }
+      ]
+    },
+
+    {
+      "id": "short",
+      "icon": "🔧",
+      "ta": "குறுகிய கால படிப்புகள் — விரைவில் வேலை",
+      "en": "Short courses — quick employment",
+      "courses": [
+        {
+          "ta": { "name": "Diploma (பாலிடெக்னிக்)", "desc": "10ஆம் வகுப்புக்குப் பிறகும் சேரலாம். முடித்த பிறகு பொறியியல் இரண்டாம் ஆண்டில் நேரடியாகச் சேரலாம் (Lateral Entry).", "career": "தொழில்நுட்ப உதவியாளர், அரசு தொழில்நுட்பப் பணி" },
+          "en": { "name": "Diploma (Polytechnic)", "desc": "Can be joined even after 10th. After finishing, you can enter engineering directly in the second year (lateral entry).", "career": "Technician, government technical posts" },
+          "duration": { "ta": "3 ஆண்டு", "en": "3 years" },
+          "eligibility": { "ta": "10ஆம் வகுப்பு அல்லது +2", "en": "10th standard or +2" },
+          "exam": { "ta": "மதிப்பெண் அடிப்படை", "en": "Merit based" },
+          "cost": { "ta": "மிகக் குறைவு", "en": "Very low" }
+        },
+        {
+          "ta": { "name": "ITI — தொழிற்பயிற்சி", "desc": "எலக்ட்ரீஷியன், ஃபிட்டர், வெல்டர், மெக்கானிக் போன்ற கை வேலைத் திறன். உடனடி வேலை வாய்ப்பு.", "career": "தொழிற்சாலை, ரயில்வே, சொந்தக் கடை" },
+          "en": { "name": "ITI — Industrial Training", "desc": "Hands-on trades: electrician, fitter, welder, mechanic. Employment comes quickly.", "career": "Factories, railways, own workshop" },
+          "duration": { "ta": "1 – 2 ஆண்டு", "en": "1 – 2 years" },
+          "eligibility": { "ta": "8 / 10ஆம் வகுப்பு", "en": "8th / 10th standard" },
+          "exam": { "ta": "நேரடிச் சேர்க்கை", "en": "Direct admission" },
+          "cost": { "ta": "மிகக் குறைவு", "en": "Very low" }
+        },
+        {
+          "ta": { "name": "D.El.Ed (ஆசிரியர் பயிற்சி)", "desc": "தொடக்கப்பள்ளி ஆசிரியர் ஆவதற்கான படிப்பு. அரசுப் பள்ளி ஆசிரியர் தேர்வு (TET) எழுதலாம்.", "career": "தொடக்கப்பள்ளி ஆசிரியர்" },
+          "en": { "name": "D.El.Ed (Teacher Training)", "desc": "Qualifies you to become a primary school teacher. You can then write the TET exam.", "career": "Primary school teacher" },
+          "duration": { "ta": "2 ஆண்டு", "en": "2 years" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": { "ta": "அரசு கலந்தாய்வு", "en": "Government counselling" },
+          "cost": { "ta": "குறைவு", "en": "Low" }
+        },
+        {
+          "ta": { "name": "கணினி / திறன் பயிற்சி — Naan Mudhalvan, NSDC", "desc": "தமிழ்நாடு அரசின் இலவச திறன் பயிற்சித் திட்டங்கள். படித்துக் கொண்டே கற்கலாம்.", "career": "தரவு பதிவு, டிசைன், டிஜிட்டல் மார்க்கெட்டிங்" },
+          "en": { "name": "Computer / skill training — Naan Mudhalvan, NSDC", "desc": "Free skill-training schemes from the Tamil Nadu government. Can be done alongside studies.", "career": "Data entry, design, digital marketing" },
+          "duration": { "ta": "3 – 12 மாதம்", "en": "3 – 12 months" },
+          "eligibility": { "ta": "பள்ளி / கல்லூரி மாணவர்", "en": "School or college student" },
+          "exam": { "ta": "இல்லை", "en": "None" },
+          "cost": { "ta": "இலவசம்", "en": "Free" }
+        }
+      ]
+    },
+
+    {
+      "id": "govt",
+      "icon": "🏛️",
+      "ta": "அரசுப் பணி — 12ஆம் வகுப்பு தகுதியில்",
+      "en": "Government jobs — with a +2 qualification",
+      "courses": [
+        {
+          "ta": { "name": "NDA — ராணுவ அதிகாரி", "desc": "12ஆம் வகுப்புக்குப் பிறகு நேரடியாக ராணுவ, கடற்படை, விமானப்படை அதிகாரி ஆகலாம். படிப்பு முழுக்க இலவசம், சம்பளத்துடன்.", "career": "ராணுவ அதிகாரி" },
+          "en": { "name": "NDA — Defence officer", "desc": "Become an Army, Navy or Air Force officer directly after 12th. Training is fully free and paid.", "career": "Commissioned officer in the armed forces" },
+          "duration": { "ta": "3 ஆண்டு பயிற்சி", "en": "3 years of training" },
+          "eligibility": { "ta": "+2 தேர்ச்சி (விமானப்படை/கடற்படைக்கு கணிதம் + இயற்பியல்)", "en": "+2 pass (Maths and Physics for Air Force and Navy)" },
+          "exam": { "ta": "UPSC NDA — ஆண்டுக்கு இரு முறை", "en": "UPSC NDA — twice a year" },
+          "cost": { "ta": "இலவசம்", "en": "Free" }
+        },
+        {
+          "ta": { "name": "SSC CHSL / ரயில்வே Group D / தபால் துறை", "desc": "மத்திய அரசுப் பணிகள். 12ஆம் வகுப்பு தகுதி போதும்.", "career": "எழுத்தர், தரவு பதிவாளர், ரயில்வே பணி" },
+          "en": { "name": "SSC CHSL / Railway Group D / Postal Department", "desc": "Central government posts. A +2 qualification is enough.", "career": "Clerk, data entry operator, railway staff" },
+          "duration": { "ta": "—", "en": "—" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": "SSC CHSL / RRB",
+          "cost": { "ta": "தேர்வுக் கட்டணம் மட்டும்", "en": "Exam fee only" }
+        },
+        {
+          "ta": { "name": "TNPSC Group 4 / VAO", "desc": "தமிழ்நாடு அரசுப் பணி. தமிழ் வழியில் எழுதலாம். கிராமப்புற மாணவர்களுக்கு நல்ல வாய்ப்பு.", "career": "கிராம நிர்வாக அலுவலர், எழுத்தர், தட்டச்சர்" },
+          "en": { "name": "TNPSC Group 4 / VAO", "desc": "Tamil Nadu government service. Can be written in Tamil — a good route for rural students.", "career": "Village administrative officer, junior assistant, typist" },
+          "duration": { "ta": "—", "en": "—" },
+          "eligibility": { "ta": "+2 தேர்ச்சி", "en": "Pass in +2" },
+          "exam": "TNPSC Group 4",
+          "cost": { "ta": "தேர்வுக் கட்டணம் மட்டும்", "en": "Exam fee only" }
+        }
+      ]
+    }
+  ],
+
+  "exams": [
+    { "name": "NEET UG", "ta": "மருத்துவம், பல் மருத்துவம், சித்தா, ஆயுர்வேதம், கால்நடை மருத்துவம் — அனைத்திற்கும் இதுவே ஒரே தேர்வு. பொதுவாக மே மாதம்.", "en": "The single entrance exam for MBBS, BDS, Siddha, Ayurveda and Veterinary. Usually held in May.", "site": "https://neet.nta.nic.in" },
+    { "name": "JEE Main / Advanced", "ta": "NIT, IIIT, IIT பொறியியல் சேர்க்கைக்கு. ஆண்டுக்கு இரு அமர்வுகள் (ஜனவரி, ஏப்ரல்).", "en": "For admission to NITs, IIITs and IITs. Two sessions each year (January and April).", "site": "https://jeemain.nta.nic.in" },
+    { "name": "TNEA", "ta": "தமிழ்நாடு பொறியியல் கலந்தாய்வு. தேர்வு இல்லை — +2 கணிதம், இயற்பியல், வேதியியல் மதிப்பெண் அடிப்படையில் கட் ஆஃப். மே–ஜூன்.", "en": "Tamil Nadu engineering counselling. No exam — the cutoff is computed from +2 Maths, Physics and Chemistry marks. May–June.", "site": "https://tneaonline.org" },
+    { "name": "CLAT", "ta": "தேசிய சட்டப் பல்கலைக்கழகங்களில் 5 ஆண்டு சட்டப் படிப்புக்கு. டிசம்பர்.", "en": "For 5-year law programmes at National Law Universities. Held in December.", "site": "https://consortiumofnlus.ac.in" },
+    { "name": "NATA", "ta": "கட்டிடக்கலை (B.Arch) சேர்க்கைக்கு. வரைதல் மற்றும் அறிவுத்திறன் தேர்வு.", "en": "For B.Arch admission. Tests drawing and aptitude.", "site": "https://nata.in" },
+    { "name": "CUET UG", "ta": "மத்தியப் பல்கலைக்கழகங்களில் இளங்கலைப் படிப்புகளுக்கு. மே–ஜூன்.", "en": "For undergraduate admission to central universities. May–June.", "site": "https://cuet.nta.nic.in" },
+    { "name": "UPSC NDA", "ta": "12ஆம் வகுப்பு முடித்த ஆண்களும் பெண்களும் ராணுவ அதிகாரி ஆக. ஆண்டுக்கு இரு முறை.", "en": "For men and women who have completed 12th to become defence officers. Twice a year.", "site": "https://upsc.gov.in" },
+    { "name": "IMU-CET", "ta": "கப்பல் படிப்புகளுக்கு (Marine Engineering, Nautical Science).", "en": "For merchant navy programmes (Marine Engineering, Nautical Science).", "site": "https://www.imu.edu.in" }
+  ],
+
+  "scholarships": [
+    { "ta": "முதல் தலைமுறை பட்டதாரி (First Graduate)", "en": "First Graduate Scheme (Tamil Nadu)", "descTa": "குடும்பத்தில் முதல் முறையாக பட்டப்படிப்பு படிக்கும் மாணவருக்கு கல்விக் கட்டண விலக்கு. கல்லூரியில் First Graduate சான்றிதழ் கேட்பார்கள் — வட்டாட்சியர் அலுவலகத்தில் வாங்கவும்.", "descEn": "Tuition fee waiver for the first person in a family to take a degree. The college will ask for a First Graduate certificate — obtain it from the Taluk office." },
+    { "ta": "பட்டதாரி பிந்தைய உதவித்தொகை (Post-Matric)", "en": "Post-Matric Scholarship (SC / ST / BC / MBC)", "descTa": "சாதிச் சான்றிதழ் மற்றும் வருமானச் சான்றிதழ் அடிப்படையில். கல்லூரி மூலமாகவே விண்ணப்பிக்கலாம்.", "descEn": "Based on community and income certificates. Apply through your college." },
+    { "ta": "புதுமைப் பெண் / தமிழ் புதல்வன் திட்டம்", "en": "Pudhumai Penn / Tamil Pudhalvan scheme", "descTa": "அரசுப் பள்ளியில் 6–12 படித்து உயர்கல்விக்குச் செல்லும் மாணவ மாணவியருக்கு மாதம் தோறும் நேரடி பண உதவி.", "descEn": "Monthly direct cash support for students who studied classes 6–12 in a government school and go on to higher education." },
+    { "ta": "தேசிய உதவித்தொகை வலைதளம்", "en": "National Scholarship Portal", "descTa": "மத்திய அரசின் அனைத்து உதவித்தொகைகளும் ஒரே இடத்தில். ஒவ்வொரு ஆண்டும் புதுப்பிக்க வேண்டும்.", "descEn": "All central government scholarships in one place. Must be renewed every year.", "site": "https://scholarships.gov.in" },
+    { "ta": "AICTE பிரகதி (மாணவியர்) / சக்ஷம்", "en": "AICTE Pragati (girls) / Saksham (differently abled)", "descTa": "பொறியியல் படிக்கும் மாணவியருக்கும் மாற்றுத்திறனாளிகளுக்கும் ஆண்டு உதவித்தொகை.", "descEn": "Annual scholarship for girl students and differently abled students in technical education." },
+    { "ta": "தனியார் அறக்கட்டளை உதவித்தொகைகள்", "en": "Private trust scholarships", "descTa": "Buddy4Study, Vidyasaarathi போன்ற தளங்களில் நூற்றுக்கணக்கான உதவித்தொகைகள் பட்டியலிடப்பட்டுள்ளன. இலவசமாகப் பதிவு செய்யலாம்.", "descEn": "Hundreds of scholarships are listed on platforms such as Buddy4Study and Vidyasaarathi. Registration is free.", "site": "https://www.buddy4study.com" },
+    { "ta": "கல்விக் கடன்", "en": "Education loan", "descTa": "₹4 லட்சம் வரை பிணையம் தேவையில்லை. வட்டி மானியத் திட்டமும் உண்டு. வங்கி மறுத்தால் Vidya Lakshmi தளத்தில் புகார் அளிக்கலாம்.", "descEn": "No collateral is required up to ₹4 lakh, and an interest subsidy scheme exists. If a bank refuses, a complaint can be filed on the Vidya Lakshmi portal.", "site": "https://www.vidyalakshmi.co.in" }
+  ],
+
+  "tips": [
+    { "ta": "நண்பன் சேர்ந்தான் என்பதற்காக ஒரு படிப்பைத் தேர்வு செய்யாதீர்கள். உங்கள் பிள்ளைக்கு எது பிடிக்கும், எதில் மதிப்பெண் நன்றாக வருகிறது என்பதைப் பாருங்கள்.", "en": "Do not choose a course because a friend chose it. Look at what your child enjoys and where the marks are already good." },
+    { "ta": "அரசுக் கல்லூரியை முதலில் முயற்சி செய்யுங்கள். கட்டணம் மிகக் குறைவு, ஆசிரியர்கள் நிரந்தரம், பட்டமும் ஒன்றுதான்.", "en": "Try government colleges first. The fees are far lower, the staff are permanent, and the degree is the same." },
+    { "ta": "கல்லூரி AICTE / UGC / NAAC அங்கீகாரம் பெற்றதா என்று சேர்வதற்கு முன் சரிபாருங்கள். அங்கீகாரம் இல்லாத பட்டம் அரசு வேலைக்கு ஏற்கப்படாது.", "en": "Check that the college has AICTE / UGC / NAAC recognition before joining. An unrecognised degree is not accepted for government jobs." },
+    { "ta": "ஆவணங்களை இப்போதே தயார் செய்யுங்கள்: சாதிச் சான்றிதழ், வருமானச் சான்றிதழ், முதல் தலைமுறை சான்றிதழ், இடமாறு சான்றிதழ், ஆதார், வங்கிக் கணக்கு.", "en": "Get the documents ready now: community certificate, income certificate, first-graduate certificate, transfer certificate, Aadhaar and a bank account." },
+    { "ta": "கலந்தாய்வுக் கட்டணம் கட்ட முடியவில்லை என்றால் எங்களிடம் சொல்லுங்கள். அதற்காக ஒரு இடத்தை இழக்க வேண்டாம்.", "en": "If you cannot afford the counselling fee, tell us. Nobody should lose a seat over that." },
+    { "ta": "\"வேலை உறுதி\" என்று பணம் கேட்கும் தனியார் நிறுவனங்களை நம்பாதீர்கள். அரசு இணையதளத்தில் மட்டுமே விண்ணப்பியுங்கள்.", "en": "Do not trust private agents who ask for money with a “job guarantee”. Apply only through official government websites." },
+    { "ta": "பன்னிரண்டாம் வகுப்பில் மதிப்பெண் குறைவாக இருந்தாலும் வழி உண்டு — பாலிடெக்னிக், ITI, திறன் பயிற்சி வழியாகவும் நல்ல வாழ்க்கை அமைக்கலாம்.", "en": "A low +2 score is not the end. Polytechnic, ITI and skill training also build a good life." }
+  ]
+}

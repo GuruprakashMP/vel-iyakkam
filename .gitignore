@@ -1,0 +1,15 @@
+# OS / OneDrive
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+~$*
+
+# Editor
+.vscode/
+.idea/
+
+# Never commit the private donor register
+private/
+*-private.*
+donor-names*

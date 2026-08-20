@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>கதைக் களஞ்சியம் · வேல் இயக்கம்</title>
+<meta name="description" content="ஆன்மிக மற்றும் நீதிக் கதைகளின் தொகுப்பு. ஒவ்வொரு தாயும் தன் பிள்ளைக்கு அறம் சொல்ல உதவும் கதைகள்.">
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<main>
+  <section class="section section--tight">
+    <div class="wrap">
+
+      <div class="sec-head" data-i18n-title="sto.h1">
+        <h1 data-i18n="sto.h1"></h1>
+        <p data-i18n="sto.lead"></p>
+      </div>
+
+      <div class="toolbar no-print">
+        <div class="field" style="flex:1;max-width:320px">
+          <label for="fSearch" data-i18n="sto.search"></label>
+          <input id="fSearch" type="search" autocomplete="off" data-i18n-ph="sto.searchph">
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <span class="badge badge-brand" id="count"></span>
+        </div>
+      </div>
+
+      <div class="chips no-print" id="cats" style="margin-bottom:24px"></div>
+
+      <div class="notice notice--info no-print" id="sampleNote" hidden style="margin-bottom:22px">
+        <span class="notice-ico">ⓘ</span><span data-i18n="c.sample"></span>
+      </div>
+
+      <div class="grid grid-3" id="grid">
+        <div class="card"><div class="skeleton" style="width:50%"></div><div class="skeleton" style="height:22px;margin-top:12px"></div><div class="skeleton" style="height:60px;margin-top:12px"></div></div>
+        <div class="card"><div class="skeleton" style="width:50%"></div><div class="skeleton" style="height:22px;margin-top:12px"></div><div class="skeleton" style="height:60px;margin-top:12px"></div></div>
+        <div class="card"><div class="skeleton" style="width:50%"></div><div class="skeleton" style="height:22px;margin-top:12px"></div><div class="skeleton" style="height:60px;margin-top:12px"></div></div>
+      </div>
+
+      <!-- Contribute -->
+      <div class="card" style="margin-top:34px;text-align:center;background:var(--surface-2)">
+        <h2 data-i18n="sto.submit"></h2>
+        <p class="muted" style="max-width:56ch;margin:0 auto 20px" data-i18n="sto.submitp"></p>
+        <a class="btn btn-solid" id="submitBtn" href="about.html" data-i18n="sto.submit"></a>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<dialog id="reader">
+  <div class="dlg-head">
+    <h3 id="dlgTitle"></h3>
+    <button class="dlg-close" id="dlgClose" type="button" data-i18n-label="c.close">✕</button>
+  </div>
+  <div class="dlg-body" id="dlgBody"></div>
+</dialog>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var stories = [], cat = '__all', q = '';
+
+  function load() {
+    VIData.loadStories().then(function (res) {
+      stories = res.items;
+      if (res.isSample) document.getElementById('sampleNote').hidden = false;
+      renderCats();
+      render();
+    }).catch(function (e) {
+      console.error(e);
+      document.getElementById('grid').innerHTML =
+        '<div class="notice"><span class="notice-ico">!</span><span>' + VI.esc(VI.t('c.error')) + '</span></div>';
+    });
+  }
+
+  function categories() {
+    var seen = {}, out = [];
+    stories.forEach(function (s) {
+      var c = (s.category || '').trim();
+      if (c && !seen[c]) { seen[c] = 1; out.push(c); }
+    });
+    return out.sort();
+  }
+
+  function renderCats() {
+    var html = '<button class="chip" type="button" data-cat="__all" aria-pressed="' +
+      (cat === '__all') + '">' + VI.esc(VI.t('sto.all')) + '</button>';
+    html += categories().map(function (c) {
+      return '<button class="chip" type="button" data-cat="' + VI.esc(c) + '" aria-pressed="' +
+        (cat === c) + '">' + VI.esc(c) + '</button>';
+    }).join('');
+    var host = document.getElementById('cats');
+    host.innerHTML = html;
+    host.querySelectorAll('[data-cat]').forEach(function (b) {
+      b.onclick = function () { cat = b.getAttribute('data-cat'); renderCats(); render(); };
+    });
+  }
+
+  function filtered() {
+    return stories.filter(function (s) {
+      if (cat !== '__all' && s.category !== cat) return false;
+      if (q) {
+        var hay = (s.title + ' ' + s.category + ' ' + s.body + ' ' + s.moral).toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+  }
+
+  function excerpt(text, n) {
+    var t = String(text).replace(/\s+/g, ' ').trim();
+    return t.length > n ? t.slice(0, n).replace(/\S+$/, '') + '…' : t;
+  }
+
+  function render() {
+    var rows = filtered();
+    document.getElementById('count').textContent = rows.length + ' ' + VI.t('sto.count');
+    var grid = document.getElementById('grid');
+
+    if (!rows.length) {
+      grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ico">📖</div><span>' +
+        VI.esc(VI.t('sto.empty')) + '</span></div>';
+      return;
+    }
+
+    grid.innerHTML = rows.map(function (s, i) {
+      return '<button class="story-card" type="button" data-i="' + i + '">' +
+        (s.category ? '<span class="badge badge-brand cat">' + VI.esc(s.category) + '</span>' : '') +
+        '<h3>' + VI.esc(s.title) + '</h3>' +
+        '<p class="excerpt">' + VI.esc(excerpt(s.body, 150)) + '</p>' +
+        (s.contributor ? '<p class="by">' + VI.esc(VI.t('sto.by')) + ': ' + VI.esc(s.contributor) + '</p>' : '') +
+      '</button>';
+    }).join('');
+
+    grid.querySelectorAll('[data-i]').forEach(function (b) {
+      b.onclick = function () { open(rows[parseInt(b.getAttribute('data-i'), 10)]); };
+    });
+  }
+
+  function open(s) {
+    document.getElementById('dlgTitle').textContent = s.title;
+    var body = document.getElementById('dlgBody');
+    body.textContent = s.body;
+    if (s.moral) {
+      var box = document.createElement('div');
+      box.className = 'notice';
+      box.style.marginTop = '20px';
+      box.style.whiteSpace = 'normal';
+      box.innerHTML = '<span class="notice-ico">✦</span><span><strong>' +
+        VI.esc(VI.t('sto.moral')) + ':</strong> ' + VI.esc(s.moral) + '</span>';
+      body.appendChild(box);
+    }
+    var d = document.getElementById('reader');
+    if (d.showModal) d.showModal(); else d.setAttribute('open', '');
+    body.scrollTop = 0;
+  }
+
+  document.addEventListener('vi:ready', function () {
+    var d = document.getElementById('reader');
+    document.getElementById('dlgClose').onclick = function () { d.close ? d.close() : d.removeAttribute('open'); };
+    d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+    document.getElementById('fSearch').oninput = function (e) { q = e.target.value.trim().toLowerCase(); render(); };
+    if (VI.cfg.forms.storySubmit) {
+      var a = document.getElementById('submitBtn');
+      a.href = VI.cfg.forms.storySubmit; a.target = '_blank'; a.rel = 'noopener';
+    }
+    load();
+  });
+
+  document.addEventListener('vi:langchange', function () { renderCats(); render(); });
+})();
+</script>
+</body>
+</html>

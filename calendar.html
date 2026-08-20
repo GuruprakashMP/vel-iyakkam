@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>சஷ்டி நாட்காட்டி · வேல் இயக்கம்</title>
+<meta name="description" content="ஒவ்வொரு மாதமும் சஷ்டி எந்த ஆங்கில தேதி என்பதை தானாகக் கணக்கிட்டுக் காட்டும் நாட்காட்டி. கந்த சஷ்டி நாட்களும் அடங்கும்.">
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<main>
+  <section class="section section--tight">
+    <div class="wrap">
+
+      <div class="sec-head" data-i18n-title="cal.h1">
+        <h1 data-i18n="cal.h1"></h1>
+        <p data-i18n="cal.lead"></p>
+      </div>
+
+      <!-- Next Sashti -->
+      <div class="sashti-next" style="margin-bottom:30px">
+        <div class="lbl" data-i18n="cal.next"></div>
+        <div class="date" id="nsDate">…</div>
+        <div class="day" id="nsDay"></div>
+        <div class="countdown" id="nsCountdown"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="toolbar no-print">
+        <div class="field">
+          <label for="fYear" data-i18n="cal.year"></label>
+          <select id="fYear"></select>
+        </div>
+        <button class="btn btn-outline btn-sm" id="btnIcs" type="button" data-i18n="cal.add"></button>
+      </div>
+
+      <!-- List -->
+      <div class="sashti-list" id="list"></div>
+
+      <!-- Table (print friendly) -->
+      <div class="notice notice--info" style="margin-top:28px">
+        <span class="notice-ico">ⓘ</span>
+        <span>
+          <strong data-i18n="cal.place"></strong>: <span id="placeName"></span><br>
+          <span class="small" data-i18n="cal.disclaimer"></span>
+        </span>
+      </div>
+
+      <!-- Kanda Sashti explainer -->
+      <div class="card" style="margin-top:22px;background:var(--gold-100)">
+        <h3 data-i18n="cal.kanda"></h3>
+        <p class="muted small" style="margin:0" data-i18n="cal.kandap"></p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/panchang.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var all = [], year = new Date().getFullYear(), next = null;
+
+  function build() {
+    var y0 = new Date().getFullYear();
+    var span = VI.cfg.display.sashtiYearsAhead || 3;
+    all = VIPanchang.sashtiDates(y0 - 1, y0 + span, VI.cfg.panchang);
+    next = VIPanchang.nextSashti(all, new Date());
+
+    var sel = document.getElementById('fYear');
+    var years = [];
+    for (var y = y0 - 1; y <= y0 + span; y++) years.push(y);
+    sel.innerHTML = years.map(function (y) { return '<option value="' + y + '">' + y + '</option>'; }).join('');
+    sel.value = year;
+    sel.onchange = function (e) { year = parseInt(e.target.value, 10); renderList(); };
+
+    document.getElementById('btnIcs').onclick = function () {
+      VI.download('vel-iyakkam-sashti.ics',
+        VIPanchang.toICS(all, 'சஷ்டி', 'Sashti'), 'text/calendar');
+    };
+
+    renderNext();
+    renderList();
+    renderPlace();
+    setInterval(renderNext, 60000);
+  }
+
+  function renderPlace() {
+    var p = VI.cfg.panchang;
+    document.getElementById('placeName').textContent =
+      (VI.lang === 'ta' ? p.placeTa : p.placeEn) +
+      ' (' + p.latitude.toFixed(2) + '°N, ' + p.longitude.toFixed(2) + '°E)';
+  }
+
+  function renderNext() {
+    if (!next) return;
+    document.getElementById('nsDate').textContent = VI.dateLabel(next.date);
+    document.getElementById('nsDay').textContent =
+      VI.weekdayLabel(next.weekday) +
+      ' · ' + VI.t('c.tamilMonths')[next.tamilMonth] +
+      (next.isKandaSashti ? ' · ' + VI.t('cal.kanda') : '');
+
+    var target = next.date.getTime() + (6 - VI.cfg.panchang.timezoneOffsetHours) * 3600000;
+    var diff = target - Date.now();
+    var box = document.getElementById('nsCountdown');
+    if (diff <= 0) {
+      box.innerHTML = '<div style="min-width:auto"><b style="font-size:1.2rem">' +
+        VI.esc(VI.t('cal.today')) + '</b></div>';
+      return;
+    }
+    box.innerHTML =
+      '<div><b>' + Math.floor(diff / 86400000) + '</b><span>' + VI.esc(VI.t('cal.days')) + '</span></div>' +
+      '<div><b>' + (Math.floor(diff / 3600000) % 24) + '</b><span>' + VI.esc(VI.t('cal.hours')) + '</span></div>' +
+      '<div><b>' + (Math.floor(diff / 60000) % 60) + '</b><span>' + VI.esc(VI.t('cal.mins')) + '</span></div>';
+  }
+
+  function renderList() {
+    var today = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    var rows = all.filter(function (s) { return s.year === year; });
+    document.getElementById('list').innerHTML = rows.map(function (s) {
+      var past = s.date.getTime() < today;
+      var cls = 'sashti-row' + (past ? ' is-past' : '') + (s.isKandaSashti ? ' is-special' : '');
+      var note = s.isKandaSashti ? VI.t('cal.kanda')
+               : VI.t('c.tamilMonths')[s.tamilMonth];
+      var sub = VI.weekdayLabel(s.weekday) + ' · ' + VI.t('c.tamilMonths')[s.tamilMonth];
+      if (past) sub += ' · ' + VI.t('cal.past');
+      return '<div class="' + cls + '">' +
+        '<div class="sashti-date"><b>' + s.date.getUTCDate() + '</b>' +
+          '<span>' + VI.esc(VI.t('c.monthsShort')[s.date.getUTCMonth()]) + '</span></div>' +
+        '<div class="sashti-meta">' +
+          '<strong>' + VI.esc(VI.dateLabel(s.date)) + '</strong>' +
+          '<span>' + VI.esc(sub) + '</span>' +
+        '</div>' +
+        (s.isKandaSashti ? '<span class="badge badge-brand">' + VI.esc(VI.t('cal.kanda')) + '</span>' : '') +
+      '</div>';
+    }).join('');
+  }
+
+  document.addEventListener('vi:ready', build);
+  document.addEventListener('vi:langchange', function () {
+    renderNext(); renderList(); renderPlace();
+  });
+})();
+</script>
+</body>
+</html>

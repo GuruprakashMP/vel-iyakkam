@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>நன்கொடை கணக்கு · வேல் இயக்கம்</title>
+<meta name="description" content="வேல் இயக்கத்தின் ஒவ்வொரு மாத வரவு செலவு கணக்கு. நன்கொடையாளர் குறியீடு மட்டும் — பெயர் இல்லை.">
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<main>
+  <section class="section section--tight">
+    <div class="wrap">
+
+      <div class="sec-head" data-i18n-title="don.h1">
+        <h1 data-i18n="don.h1"></h1>
+        <p data-i18n="don.lead"></p>
+      </div>
+
+      <!-- Summary -->
+      <div class="grid grid-4" id="sumGrid" style="margin-bottom:26px">
+        <div class="stat"><div class="skeleton" style="width:70%"></div><div class="skeleton" style="height:28px;margin-top:10px"></div></div>
+        <div class="stat"><div class="skeleton" style="width:70%"></div><div class="skeleton" style="height:28px;margin-top:10px"></div></div>
+        <div class="stat"><div class="skeleton" style="width:70%"></div><div class="skeleton" style="height:28px;margin-top:10px"></div></div>
+        <div class="stat"><div class="skeleton" style="width:70%"></div><div class="skeleton" style="height:28px;margin-top:10px"></div></div>
+      </div>
+
+      <div class="notice notice--info no-print" id="sampleNote" hidden style="margin-bottom:22px">
+        <span class="notice-ico">ⓘ</span><span data-i18n="c.sample"></span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="chips no-print" style="margin-bottom:18px" role="tablist">
+        <button class="chip" id="tabIn"      type="button" role="tab" aria-pressed="true"  data-i18n="don.tab.in"></button>
+        <button class="chip" id="tabOut"     type="button" role="tab" aria-pressed="false" data-i18n="don.tab.out"></button>
+        <button class="chip" id="tabSummary" type="button" role="tab" aria-pressed="false" data-i18n="don.tab.summary"></button>
+      </div>
+
+      <!-- Filters -->
+      <div class="toolbar no-print">
+        <div class="field">
+          <label for="fMonth" data-i18n="don.month"></label>
+          <select id="fMonth"></select>
+        </div>
+        <div class="field" id="codeField">
+          <label for="fCode" data-i18n="don.search"></label>
+          <input id="fCode" type="search" autocomplete="off" data-i18n-ph="don.searchph">
+        </div>
+        <button class="btn btn-outline btn-sm" id="btnCsv"   type="button" data-i18n="don.export"></button>
+        <button class="btn btn-outline btn-sm" id="btnPrint" type="button" data-i18n="don.print"></button>
+      </div>
+
+      <!-- Table -->
+      <div id="tableHost">
+        <div class="empty"><div class="ico">⏳</div><span data-i18n="don.loading"></span></div>
+      </div>
+
+      <!-- Privacy -->
+      <div class="card" style="margin-top:30px;background:var(--surface-2)">
+        <h3 data-i18n="don.privacy"></h3>
+        <p class="muted small" style="margin:0" data-i18n="don.privacyp"></p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var donations = [], expenses = [], stats = null;
+  var view = 'in', month = 'all', code = '';
+
+  /* ---------------- load ---------------- */
+  function load() {
+    Promise.all([VIData.loadDonations(), VIData.loadExpenses()]).then(function (r) {
+      donations = r[0].items; expenses = r[1].items;
+      stats = VIData.summarise(donations, expenses);
+      if (r[0].isSample || r[1].isSample) document.getElementById('sampleNote').hidden = false;
+      buildMonths();
+      renderAll();
+    }).catch(function (e) {
+      console.error(e);
+      document.getElementById('tableHost').innerHTML =
+        '<div class="notice"><span class="notice-ico">!</span><span>' + VI.esc(VI.t('c.error')) + '</span></div>';
+    });
+  }
+
+  function buildMonths() {
+    var set = {};
+    donations.forEach(function (d) { set[d.month] = 1; });
+    expenses.forEach(function (e) { if (e.month) set[e.month] = 1; });
+    var months = Object.keys(set).sort().reverse();
+    var sel = document.getElementById('fMonth');
+    sel.innerHTML = '<option value="all">' + VI.esc(VI.t('don.allmonths')) + '</option>' +
+      months.map(function (m) { return '<option value="' + m + '">' + VI.esc(VI.monthLabel(m)) + '</option>'; }).join('');
+    sel.value = month;
+  }
+
+  /* ---------------- summary cards ---------------- */
+  function renderSummary() {
+    if (!stats) return;
+    var scope = month === 'all' ? null : stats.months.filter(function (s) { return s.month === month; })[0];
+    var inAmt  = scope ? scope.in  : stats.totalIn;
+    var outAmt = scope ? scope.out : stats.totalOut;
+    var bal    = scope ? scope.balance : stats.balance;
+    var dc     = scope ? scope.donorCount : stats.donorCount;
+    var sub    = scope ? VI.monthLabel(month) : VI.t('don.allmonths');
+
+    var cells = [
+      { l: 'home.stats.collected', v: VI.money(inAmt),  brand: true },
+      { l: 'home.stats.spent',     v: VI.money(outAmt) },
+      { l: 'home.stats.balance',   v: VI.money(bal) },
+      { l: 'home.stats.donors',    v: String(dc) }
+    ];
+    document.getElementById('sumGrid').innerHTML = cells.map(function (c) {
+      return '<div class="stat' + (c.brand ? ' stat--brand' : '') + '">' +
+        '<div class="stat-label">' + VI.esc(VI.t(c.l)) + '</div>' +
+        '<div class="stat-value">' + VI.esc(c.v) + '</div>' +
+        '<div class="stat-sub">' + VI.esc(sub) + '</div></div>';
+    }).join('');
+  }
+
+  /* ---------------- filtering ---------------- */
+  function filteredIn() {
+    return donations.filter(function (d) {
+      if (month !== 'all' && d.month !== month) return false;
+      if (code && d.code.toLowerCase().indexOf(code) === -1) return false;
+      return true;
+    }).sort(function (a, b) {
+      return b.month.localeCompare(a.month) || a.code.localeCompare(b.code);
+    });
+  }
+  function filteredOut() {
+    return expenses.filter(function (e) {
+      if (month !== 'all' && e.month !== month) return false;
+      if (code) {
+        var hay = (e.beneficiary + ' ' + e.category + ' ' + e.desc).toLowerCase();
+        if (hay.indexOf(code) === -1) return false;
+      }
+      return true;
+    }).sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+  }
+
+  /* ---------------- tables ---------------- */
+  function empty() {
+    return '<div class="empty"><div class="ico">🗒</div><span>' + VI.esc(VI.t('don.empty')) + '</span></div>';
+  }
+  function showAmt() { return VI.cfg.display.showAmountsPublicly !== false; }
+
+  function renderIn() {
+    var rows = filteredIn();
+    if (!rows.length) return empty();
+    var total = rows.reduce(function (a, d) { return a + (d.paid ? d.amount : 0); }, 0);
+    var body = rows.map(function (d) {
+      return '<tr>' +
+        '<td class="code-cell">' + VI.esc(d.code) + '</td>' +
+        '<td>' + VI.esc(VI.monthLabelShort(d.month)) + '</td>' +
+        (showAmt() ? '<td class="num">' + VI.esc(VI.money(d.amount)) + '</td>' : '') +
+        '<td class="small muted">' + VI.esc(d.date) + '</td>' +
+        '<td class="small">' + VI.esc(d.method) + '</td>' +
+        '<td><span class="badge ' + (d.paid ? 'badge-ok' : 'badge-wait') + '">' +
+          VI.esc(VI.t(d.paid ? 'don.paid' : 'don.pending')) + '</span></td>' +
+      '</tr>';
+    }).join('');
+    return '<div class="table-wrap"><table>' +
+      '<thead><tr>' +
+        '<th>' + VI.esc(VI.t('don.th.code')) + '</th>' +
+        '<th>' + VI.esc(VI.t('don.th.month')) + '</th>' +
+        (showAmt() ? '<th class="num">' + VI.esc(VI.t('don.th.amount')) + '</th>' : '') +
+        '<th>' + VI.esc(VI.t('don.th.date')) + '</th>' +
+        '<th>' + VI.esc(VI.t('don.th.method')) + '</th>' +
+        '<th>' + VI.esc(VI.t('don.th.status')) + '</th>' +
+      '</tr></thead><tbody>' + body + '</tbody>' +
+      (showAmt() ? '<tfoot><tr><td colspan="2">' + VI.esc(VI.t('don.total')) + '</td>' +
+        '<td class="num">' + VI.esc(VI.money(total)) + '</td><td colspan="3"></td></tr></tfoot>' : '') +
+      '</table></div>';
+  }
+
+  function renderOut() {
+    var rows = filteredOut();
+    if (!rows.length) return empty();
+    var total = rows.reduce(function (a, e) { return a + e.amount; }, 0);
+    var body = rows.map(function (e) {
+      return '<tr>' +
+        '<td class="small muted">' + VI.esc(e.date) + '</td>' +
+        '<td>' + VI.esc(e.category) + '</td>' +
+        '<td class="code-cell">' + VI.esc(e.beneficiary) + '</td>' +
+        '<td class="small">' + VI.esc(e.desc) + '</td>' +
+        '<td class="num">' + VI.esc(VI.money(e.amount)) + '</td>' +
+      '</tr>';
+    }).join('');
+    return '<div class="table-wrap"><table>' +
+      '<thead><tr>' +
+        '<th>' + VI.esc(VI.t('don.th.date')) + '</th>' +
+        '<th>' + VI.esc(VI.t('don.th.category')) + '</th>' +
+        '<th>' + VI.esc(VI.t('don.th.beneficiary')) + '</th>' +
+        '<th>' + VI.esc(VI.t('don.th.desc')) + '</th>' +
+        '<th class="num">' + VI.esc(VI.t('don.th.amount')) + '</th>' +
+      '</tr></thead><tbody>' + body + '</tbody>' +
+      '<tfoot><tr><td colspan="4">' + VI.esc(VI.t('don.total')) + '</td>' +
+      '<td class="num">' + VI.esc(VI.money(total)) + '</td></tr></tfoot></table></div>';
+  }
+
+  function renderSummaryTable() {
+    if (!stats || !stats.months.length) return empty();
+    var rows = stats.months.slice().reverse();
+    var body = rows.map(function (s) {
+      return '<tr>' +
+        '<td><strong>' + VI.esc(VI.monthLabel(s.month)) + '</strong></td>' +
+        '<td class="num">' + s.donorCount + '</td>' +
+        '<td class="num">' + VI.esc(VI.money(s.in)) + '</td>' +
+        '<td class="num">' + VI.esc(VI.money(s.out)) + '</td>' +
+        '<td class="num"><strong>' + VI.esc(VI.money(s.balance)) + '</strong></td>' +
+      '</tr>';
+    }).join('');
+    return '<div class="table-wrap"><table>' +
+      '<thead><tr>' +
+        '<th>' + VI.esc(VI.t('don.th.month')) + '</th>' +
+        '<th class="num">' + VI.esc(VI.t('don.th.count')) + '</th>' +
+        '<th class="num">' + VI.esc(VI.t('don.th.in')) + '</th>' +
+        '<th class="num">' + VI.esc(VI.t('don.th.out')) + '</th>' +
+        '<th class="num">' + VI.esc(VI.t('don.th.bal')) + '</th>' +
+      '</tr></thead><tbody>' + body + '</tbody>' +
+      '<tfoot><tr><td>' + VI.esc(VI.t('don.total')) + '</td><td></td>' +
+      '<td class="num">' + VI.esc(VI.money(stats.totalIn)) + '</td>' +
+      '<td class="num">' + VI.esc(VI.money(stats.totalOut)) + '</td>' +
+      '<td class="num">' + VI.esc(VI.money(stats.balance)) + '</td></tr></tfoot></table></div>';
+  }
+
+  function renderTable() {
+    var host = document.getElementById('tableHost');
+    host.innerHTML = view === 'in' ? renderIn() : view === 'out' ? renderOut() : renderSummaryTable();
+    document.getElementById('codeField').style.display = view === 'summary' ? 'none' : '';
+  }
+
+  function renderAll() { renderSummary(); renderTable(); }
+
+  /* ---------------- CSV export ---------------- */
+  function exportCsv() {
+    var head, rows, name;
+    if (view === 'in') {
+      head = ['Code', 'Month', 'Amount', 'PaidDate', 'Method', 'Status'];
+      rows = filteredIn().map(function (d) { return [d.code, d.month, d.amount, d.date, d.method, d.paid ? 'Paid' : 'Pending']; });
+      name = 'vel-iyakkam-donations';
+    } else if (view === 'out') {
+      head = ['Date', 'Month', 'Category', 'Beneficiary', 'Amount', 'Description'];
+      rows = filteredOut().map(function (e) { return [e.date, e.month, e.category, e.beneficiary, e.amount, e.desc]; });
+      name = 'vel-iyakkam-expenses';
+    } else {
+      head = ['Month', 'Donors', 'In', 'Out', 'Balance'];
+      rows = stats.months.map(function (s) { return [s.month, s.donorCount, s.in, s.out, s.balance]; });
+      name = 'vel-iyakkam-summary';
+    }
+    var csv = [head].concat(rows).map(function (r) {
+      return r.map(function (c) {
+        c = String(c == null ? '' : c);
+        return /[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c;
+      }).join(',');
+    }).join('\r\n');
+    VI.download(name + '-' + (month === 'all' ? 'all' : month) + '.csv', csv, 'text/csv');
+  }
+
+  /* ---------------- wiring ---------------- */
+  function setView(v) {
+    view = v;
+    ['In', 'Out', 'Summary'].forEach(function (n) {
+      document.getElementById('tab' + n).setAttribute('aria-pressed', n.toLowerCase() === v ? 'true' : 'false');
+    });
+    renderTable();
+  }
+
+  document.addEventListener('vi:ready', function () {
+    document.getElementById('tabIn').onclick      = function () { setView('in'); };
+    document.getElementById('tabOut').onclick     = function () { setView('out'); };
+    document.getElementById('tabSummary').onclick = function () { setView('summary'); };
+    document.getElementById('fMonth').onchange = function (e) { month = e.target.value; renderAll(); };
+    document.getElementById('fCode').oninput   = function (e) { code = e.target.value.trim().toLowerCase(); renderTable(); };
+    document.getElementById('btnCsv').onclick   = exportCsv;
+    document.getElementById('btnPrint').onclick = function () { window.print(); };
+    load();
+  });
+
+  document.addEventListener('vi:langchange', function () {
+    if (!stats) return;
+    buildMonths();
+    renderAll();
+  });
+})();
+</script>
+</body>
+</html>

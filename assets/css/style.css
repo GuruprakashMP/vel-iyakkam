@@ -70,7 +70,7 @@ p{margin:0 0 1em}
   border-bottom:1px solid var(--line); box-shadow:var(--sh-1);
 }
 .nav{display:flex; align-items:center; gap:12px; height:64px}
-.brand{display:flex; align-items:center; gap:10px; font-weight:800; color:var(--ink); font-size:1.1rem}
+.brand{display:flex; align-items:center; gap:10px; font-weight:800; color:var(--ink); font-size:1.1rem; white-space:nowrap; flex:none}
 .brand:hover{text-decoration:none}
 .brand-mark{
   width:38px; height:38px; flex:none; border-radius:11px;
@@ -83,8 +83,8 @@ p{margin:0 0 1em}
 
 .nav-links{display:flex; gap:2px; margin-inline-start:auto; align-items:center}
 .nav-links a{
-  padding:9px 13px; border-radius:var(--r-pill); color:var(--ink-2);
-  font-weight:600; font-size:.92rem; white-space:nowrap;
+  padding:9px 11px; border-radius:var(--r-pill); color:var(--ink-2);
+  font-weight:600; font-size:.9rem; white-space:nowrap;
 }
 .nav-links a:hover{background:var(--surface-2); color:var(--ink); text-decoration:none}
 .nav-links a[aria-current="page"]{background:var(--gold-100); color:var(--red-700)}
@@ -100,16 +100,22 @@ p{margin:0 0 1em}
 .lang-btn{width:auto; padding:0 13px; letter-spacing:.03em}
 .nav-toggle{display:none}
 
-@media (max-width:900px){
-  .nav-toggle{display:grid}
-  .nav-links{
-    position:fixed; inset:64px 0 auto 0; flex-direction:column; gap:0; align-items:stretch;
-    background:var(--surface); border-bottom:1px solid var(--line); padding:8px 14px 18px;
-    box-shadow:var(--sh-2); max-height:calc(100vh - 64px); overflow:auto;
-  }
-  .nav-links:not(.open){display:none}
-  .nav-links a{padding:13px 14px; border-radius:10px; font-size:1rem}
-  .nav-tools{margin-inline-start:auto}
+/* Collapsed (hamburger) nav — app.js adds .nav--compact whenever the links
+   do not fit on one line, so long Tamil labels never overflow the header. */
+.site-header .wrap{max-width:1320px}
+.nav--compact .nav-toggle{display:grid}
+.nav--compact .nav-links{
+  position:fixed; inset:64px 0 auto 0; flex-direction:column; gap:0; align-items:stretch;
+  background:var(--surface); border-bottom:1px solid var(--line); padding:8px 14px 18px;
+  box-shadow:var(--sh-2); max-height:calc(100vh - 64px); overflow:auto;
+}
+.nav--compact .nav-links:not(.open){display:none}
+.nav--compact .nav-links a{padding:13px 14px; border-radius:10px; font-size:1rem}
+.nav--compact .nav-tools{margin-inline-start:auto}
+@media (max-width:480px){
+  .site-header .wrap{padding:0 14px}
+  .brand{white-space:normal; flex:0 1 auto; min-width:0; font-size:1rem}
+  .nav-tools{gap:6px}
 }
 
 /* ---------- Hero ---------- */
@@ -158,6 +164,8 @@ p{margin:0 0 1em}
 .grid-2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .grid-3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
 .grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.grid-pair{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:700px){ .grid-pair{grid-template-columns:1fr} }
 
 .card{
   background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg);
@@ -206,7 +214,8 @@ thead th{
   border-bottom:1px solid var(--line); white-space:nowrap;
 }
 html[lang="ta"] thead th{text-transform:none; letter-spacing:0; font-size:.86rem}
-tbody td{padding:12px 16px; border-bottom:1px solid var(--line-2); vertical-align:middle}
+tbody td{padding:12px 16px; border-bottom:1px solid var(--line-2); vertical-align:middle; white-space:nowrap}
+tbody td.td-wrap{white-space:normal; min-width:220px}
 tbody tr:last-child td{border-bottom:0}
 tbody tr:hover{background:var(--surface-2)}
 tfoot td{padding:13px 16px; border-top:2px solid var(--line); font-weight:800; background:var(--surface-2)}
@@ -245,6 +254,7 @@ input,select,textarea{
 input:focus,select:focus,textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(224,164,19,.18)}
 .toolbar{display:flex; flex-wrap:wrap; gap:12px; align-items:end; margin-bottom:20px}
 .toolbar .field{margin-bottom:0; min-width:150px}
+.field .badge{align-self:flex-start}
 
 /* ---------- Notices ---------- */
 .notice{
@@ -297,7 +307,7 @@ html[lang="ta"] .countdown span{text-transform:none; letter-spacing:0; font-size
   background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg);
   padding:24px; box-shadow:var(--sh-1); display:flex; flex-direction:column; gap:10px;
   transition:transform .15s, box-shadow .15s; cursor:pointer; text-align:start;
-  font-family:inherit; color:inherit; width:100%;
+  font:inherit; line-height:inherit; color:inherit; width:100%;
 }
 .story-card:hover{transform:translateY(-3px); box-shadow:var(--sh-2)}
 .story-card .cat{align-self:start}

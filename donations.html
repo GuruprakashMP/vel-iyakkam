@@ -35,10 +35,10 @@
       </div>
 
       <!-- Tabs -->
-      <div class="chips no-print" style="margin-bottom:18px" role="tablist">
-        <button class="chip" id="tabIn"      type="button" role="tab" aria-pressed="true"  data-i18n="don.tab.in"></button>
-        <button class="chip" id="tabOut"     type="button" role="tab" aria-pressed="false" data-i18n="don.tab.out"></button>
-        <button class="chip" id="tabSummary" type="button" role="tab" aria-pressed="false" data-i18n="don.tab.summary"></button>
+      <div class="chips no-print" style="margin-bottom:18px">
+        <button class="chip" id="tabIn"      type="button" aria-pressed="true"  data-i18n="don.tab.in"></button>
+        <button class="chip" id="tabOut"     type="button" aria-pressed="false" data-i18n="don.tab.out"></button>
+        <button class="chip" id="tabSummary" type="button" aria-pressed="false" data-i18n="don.tab.summary"></button>
       </div>
 
       <!-- Filters -->
@@ -196,7 +196,7 @@
         '<td class="small muted">' + VI.esc(e.date) + '</td>' +
         '<td>' + VI.esc(e.category) + '</td>' +
         '<td class="code-cell">' + VI.esc(e.beneficiary) + '</td>' +
-        '<td class="small">' + VI.esc(e.desc) + '</td>' +
+        '<td class="small td-wrap">' + VI.esc(e.desc) + '</td>' +
         '<td class="num">' + VI.esc(VI.money(e.amount)) + '</td>' +
       '</tr>';
     }).join('');

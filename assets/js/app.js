@@ -112,6 +112,8 @@
     '<path d="M9.1 13.6h5.8" stroke="#FBEFD3" stroke-width="1.4" stroke-linecap="round"/>' +
     '</svg>';
 
+  var fitNav = function () {};
+
   function buildHeader() {
     var here = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
     var links = PAGES.map(function (p) {
@@ -153,6 +155,21 @@
     nl.addEventListener('click', function (e) {
       if (e.target.tagName === 'A') { nl.classList.remove('open'); tog.setAttribute('aria-expanded', 'false'); }
     });
+
+    // Collapse to the menu button whenever the links do not fit (Tamil labels are long)
+    var nav = el.querySelector('.nav');
+    fitNav = function () {
+      nav.classList.remove('nav--compact');
+      if (window.innerWidth <= 900 || nav.scrollWidth > nav.clientWidth + 1) {
+        nav.classList.add('nav--compact');
+      } else {
+        nl.classList.remove('open'); tog.setAttribute('aria-expanded', 'false');
+      }
+    };
+    var fitTimer;
+    window.addEventListener('resize', function () { clearTimeout(fitTimer); fitTimer = setTimeout(fitNav, 80); });
+    document.addEventListener('vi:langchange', fitNav);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNav);
   }
 
   function buildFooter() {
@@ -188,6 +205,7 @@
     buildHeader();
     buildFooter();
     applyI18n();
+    fitNav();
     document.dispatchEvent(new CustomEvent('vi:ready', { detail: { lang: lang } }));
   }
 

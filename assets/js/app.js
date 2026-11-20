@@ -117,7 +117,7 @@
       }
       if (r.in > 0) cur.in += r.in;
       if (r.out > 0) {
-        cur.out += r.out; cur.date = r.date || cur.date;
+        cur.out += r.out; if (!cur.date) cur.date = r.date;   // a Sashti's date = its first spending row
         if (r.details) cur.details.push(r.details);
         prevSpend = true;
       }
@@ -233,7 +233,8 @@
       var r = ledger[i];
       if (filter && r.code !== filter) continue;
       var what = r.out > 0 ? '<b>சஷ்டி செலவு</b>' + (r.details ? '<div class="sub">' + esc(r.details) + '</div>' : '')
-                           : codeLabel(r.code, members);
+               : r.code ? codeLabel(r.code, members) + (r.details ? '<div class="sub">' + esc(r.details) + '</div>' : '')
+               : '<b>நன்கொடை</b>' + (r.details ? '<div class="sub">' + esc(r.details) + '</div>' : '');
       rows.push('<tr' + (r.out > 0 ? ' class="spend"' : '') + '><td>' + dmy(r.date) + '</td><td>' + what +
         '</td><td class="n in">' + (r.in ? rupees(r.in) : '') + '</td><td class="n out">' +
         (r.out ? rupees(r.out) : '') + '</td><td class="n opt">' + rupees(r.balance) + '</td></tr>');

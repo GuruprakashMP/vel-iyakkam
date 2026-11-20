@@ -2,7 +2,8 @@
 
 🌐 **https://guruprakashmp.github.io/vel-iyakkam/**
 
-One page: live totals, next Sashti, Sashti-wise accounts, "check your payments" by code, and the members wall.
+One page: help given (Sashtis served, education kits, members), the help list, next Sashti, folded monthly accounts, and the members wall (A to Z).
+The site never shows what each person gave.
 
 ## How the data flows
 
@@ -22,6 +23,7 @@ Nobody edits the website for the monthly work. Everything happens in the **Vel F
 |---|---|
 | A member pays | `Date`, `Member Code`, `Received ₹` |
 | Sashti day spending | `Date`, `Spent ₹`, `Details` (leave Member Code empty) |
+| After each Sashti (`Help` tab) | `Date`, `Students`, `What was given` (no names or addresses) |
 
 No Total / Remaining rows and no splitting a payment into a/b: the `Balance` column and the website work it out.
 Rows are read in order, so always add at the bottom and never sort.
@@ -55,7 +57,7 @@ Without a photo the member's initials are shown.
 ## Privacy
 
 - Phone, email, address and date of birth never leave the private form sheet.
-- Accounts show member codes, not names (`showNamesInAccounts` in `config.js`).
+- The website shows only monthly totals; no per-person amounts, no codes next to amounts.
 
 ## Local preview
 

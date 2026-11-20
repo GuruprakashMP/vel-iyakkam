@@ -8,6 +8,7 @@ window.VI_CONFIG = {
   sheetId: '1A_5LgRckHjXQWd3BLtg4RZyJxWyOEnxjpnSCbTig47Y',
   accountsTab: 'Accounts',   // Date | Member Code | Received ₹ | Spent ₹ | Details | ...
   membersTab:  'Members',    // Code | Name | Joined (filled automatically from the form sheet)
+  helpTab:     'Help',       // Date | Students | What was given | Note (one row per Sashti)
 
   joinForm: 'https://docs.google.com/forms/d/1Wjd5mt58Vyq9wMWr-Pat8vwaAEnH10_1HFQTDCFBn28/viewform',
   whatsapp: 'https://chat.whatsapp.com/JsAr0Xwnhv6FZPOWJ9via0',
@@ -17,14 +18,14 @@ window.VI_CONFIG = {
      e.g. photos/VEL-001.jpg. No photo = the member's initials are shown. */
   photoFolder: 'photos/',
   photoExt: '.jpg',
+  photoVersion: 1,          // raise by 1 after replacing a photo, so browsers fetch the new one
 
   /* Codes to leave off the members wall, e.g. ['VEL-014'].
      Their payments still count in the accounts. */
   hideMembers: [],
 
-  /* Privacy. Accounts list payments by code only, so nobody is compared
-     by amount. Set to true to print names next to amounts. */
-  showNamesInAccounts: false,
+  /* Privacy: the site never shows what each person gave.
+     Set to true to print the member code under each name on the wall. */
   showCodesOnMembers: false,
 
   /* Sashti dates are calculated for sunrise at this place. */

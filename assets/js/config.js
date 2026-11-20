@@ -31,5 +31,5 @@ window.VI_CONFIG = {
   showCodesOnMembers: false,
 
   /* Sashti dates are calculated for sunrise at this place. */
-  place: { latitude: 8.4956, longitude: 78.1119, nameTa: 'திருச்செந்தூர்' }
+  place: { latitude: 8.4956, longitude: 78.1119, nameTa: 'திருச்செந்தூர்', nameEn: 'Tiruchendur' }
 };

@@ -36,7 +36,7 @@ p{margin:0 0 1em}
 /* header */
 .top{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line)}
 .top-in{display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px}
-.brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:800;font-size:1.1rem;text-decoration:none;white-space:nowrap}
+.brand{margin-right:auto;display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:800;font-size:1.1rem;text-decoration:none;white-space:nowrap}
 .brand img{border-radius:10px}
 .nav{display:flex;gap:4px;align-items:center}
 .nav a{color:var(--ink-2);text-decoration:none;padding:7px 14px;border-radius:999px;font-size:.95rem;font-weight:700}
@@ -211,3 +211,10 @@ details.more .table-wrap{margin-top:6px}
 .contact-list li:last-child{border-bottom:0}
 .contact-list span{color:var(--ink-2);font-weight:600}
 .contact-list a{font-weight:700}
+
+/* language switch */
+.lang{order:2;margin-left:10px;font:inherit;font-size:.82rem;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--gold);background:var(--card-2);color:var(--red);cursor:pointer;white-space:nowrap}
+.lang:hover{background:var(--cream)}
+.nav{order:1}
+html[lang="en"] .stat .e,html[lang="en"] h2 small,html[lang="en"] h3 small,html[lang="en"] summary small{display:none}
+@media (max-width:640px){.lang{order:2;margin-left:auto}.nav{order:3}}

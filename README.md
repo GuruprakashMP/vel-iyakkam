@@ -8,6 +8,10 @@ Four tabs, each its own page:
 - `members.html` (உறுப்பினர்கள்): the members wall, A to Z, with photos.
 - `contact.html` (தொடர்பு): how to join, WhatsApp group, e-mail, the form.
 
+Every page has a **English / தமிழ்** button in the header; the choice is remembered in that browser.
+Text from the sheet uses its English column when there is one: `Help` column E "What was given (English)"
+and `Accounts` column I "Details (English)". Both are optional; when empty, the Tamil is shown.
+
 ## How the data flows
 
 ```

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>வேல் இயக்கம் · Vel Iyakkam</title>
+<title data-en="Vel Iyakkam">வேல் இயக்கம் · Vel Iyakkam</title>
 <meta name="description" content="வேல் இயக்கம்: முருக பக்தர்களின் பக்தி மற்றும் சேவை இயக்கம். ஒவ்வொரு ரூபாயின் வரவும் செலவும் வெளிப்படையாக.">
 <meta property="og:title" content="வேல் இயக்கம் · Vel Iyakkam">
 <meta property="og:description" content="A devotion and service movement of Murugan devotees. Every rupee in and out, shown openly.">
@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261121f">
+<link rel="stylesheet" href="assets/css/style.css?v=20261121h">
 </head>
 <body data-page="home">
 
@@ -21,13 +21,14 @@
   <div class="wrap top-in">
     <a class="brand" href="index.html">
       <img src="assets/img/favicon.svg" alt="" width="36" height="36">
-      <span>வேல் இயக்கம்</span>
+      <span data-en="Vel Iyakkam">வேல் இயக்கம்</span>
     </a>
+    <button class="lang" id="langBtn" type="button">English</button>
     <nav class="nav" aria-label="பக்கங்கள்">
-      <a href="index.html" class="on" aria-current="page">முகப்பு</a>
-      <a href="accounts.html">கணக்கு</a>
-      <a href="members.html">உறுப்பினர்கள்</a>
-      <a href="contact.html">தொடர்பு</a>
+      <a href="index.html" class="on" aria-current="page" data-en="Home">முகப்பு</a>
+      <a href="accounts.html" data-en="Accounts">கணக்கு</a>
+      <a href="members.html" data-en="Members">உறுப்பினர்கள்</a>
+      <a href="contact.html" data-en="Contact">தொடர்பு</a>
     </nav>
   </div>
 </header>
@@ -44,14 +45,14 @@
         </picture>
       </figure>
       <div class="hero-text">
-      <p class="om">ஓம் சரவணபவ</p>
-      <h1>வேல் இயக்கம்</h1>
-      <p class="yama">யாமிருக்க பயமேன்</p>
-      <p class="lead">முருக பக்தர்களின் வாழ்வாதாரத் தேவைகளுக்கு உதவ, நாம் அனைவரும் ஒன்றுசேர்வோம்!
+      <p class="om" data-en="Om Saravanabhava">ஓம் சரவணபவ</p>
+      <h1 data-en="Vel Iyakkam">வேல் இயக்கம்</h1>
+      <p class="yama" data-en="Why fear, when I am here">யாமிருக்க பயமேன்</p>
+      <p class="lead" data-en="Let us all come together to help Murugan devotees with their livelihood needs! Vel Iyakkam is a movement of devotion and service.">முருக பக்தர்களின் வாழ்வாதாரத் தேவைகளுக்கு உதவ, நாம் அனைவரும் ஒன்றுசேர்வோம்!
         வேல் இயக்கம் ஒரு பக்தி மற்றும் சேவை இயக்கம்.</p>
       <div class="cta">
-        <a class="btn btn-gold js-join" href="#">உறுப்பினராகச் சேர</a>
-        <a class="btn btn-line js-wa" href="#">WhatsApp குழு</a>
+        <a class="btn btn-gold js-join" href="#" data-en="Become a member">உறுப்பினராகச் சேர</a>
+        <a class="btn btn-line js-wa" href="#" data-en="WhatsApp group">WhatsApp குழு</a>
       </div>
       </div>
       <div class="vel-flag" data-decor="vel" aria-hidden="true"></div>
@@ -62,15 +63,15 @@
   <div id="notice" class="notice wrap" hidden></div>
 
   <section class="wrap stats" aria-label="Summary">
-    <div class="stat"><span class="k">சஷ்டி சேவைகள்</span><span class="v" id="sSashti">…</span><span class="e">Sashti services</span></div>
-    <div class="stat stat-hl"><span class="k">கல்வித் தொகுப்புகள்</span><span class="v" id="sKits">…</span><span class="e">Education kits given</span></div>
-    <div class="stat"><span class="k">உறுப்பினர்கள்</span><span class="v" id="sMem">…</span><span class="e">Members</span></div>
+    <div class="stat"><span class="k" data-en="Sashti services">சஷ்டி சேவைகள்</span><span class="v" id="sSashti">…</span><span class="e">Sashti services</span></div>
+    <div class="stat stat-hl"><span class="k" data-en="Education kits given">கல்வித் தொகுப்புகள்</span><span class="v" id="sKits">…</span><span class="e">Education kits given</span></div>
+    <div class="stat"><span class="k" data-en="Members">உறுப்பினர்கள்</span><span class="v" id="sMem">…</span><span class="e">Members</span></div>
   </section>
 
   <section class="wrap">
     <div class="sashti">
       <div>
-        <span class="k">அடுத்த சஷ்டி · Next Sashti</span>
+        <span class="k" data-en="Next Sashti">அடுத்த சஷ்டி · Next Sashti</span>
         <div class="d" id="nsDate">…</div>
         <div class="muted small" id="nsPlace"></div>
       </div>
@@ -79,17 +80,17 @@
   </section>
 
   <section class="wrap sec" id="help">
-    <h2>உதவிப் பட்டியல் <small>Help given</small></h2>
-    <p class="muted">ஒவ்வொரு சஷ்டி நாளிலும், உறுப்பினர்களின் பங்களிப்பில் மாணவர்களுக்குக் கல்விப் பொருள்கள் வழங்கப்படுகின்றன.</p>
+    <h2 data-en="Help given">உதவிப் பட்டியல் <small>Help given</small></h2>
+    <p class="muted" data-en="On every Sashti day, students receive education materials paid for by our members&#x27; contributions.">ஒவ்வொரு சஷ்டி நாளிலும், உறுப்பினர்களின் பங்களிப்பில் மாணவர்களுக்குக் கல்விப் பொருள்கள் வழங்கப்படுகின்றன.</p>
     <ol class="helplist" id="helpList"></ol>
 
     <div class="tab-links">
       <a class="acc-link" href="accounts.html">
-        <span><b>வரவு செலவு கணக்கு</b><small>ஒவ்வொரு சஷ்டிக்கும் வந்த தொகை, வழங்கியோர், செலவு</small></span>
+        <span data-en="&lt;b&gt;Accounts&lt;/b&gt;&lt;small&gt;What came in, who gave and what was spent, Sashti by Sashti&lt;/small&gt;"><b>வரவு செலவு கணக்கு</b><small>ஒவ்வொரு சஷ்டிக்கும் வந்த தொகை, வழங்கியோர், செலவு</small></span>
         <span class="arrow">→</span>
       </a>
       <a class="acc-link" href="members.html">
-        <span><b>எங்கள் உறுப்பினர்கள்</b><small>வேல் இயக்கத்தின் வேர்கள்</small></span>
+        <span data-en="&lt;b&gt;Our members&lt;/b&gt;&lt;small&gt;The roots of Vel Iyakkam&lt;/small&gt;"><b>எங்கள் உறுப்பினர்கள்</b><small>வேல் இயக்கத்தின் வேர்கள்</small></span>
         <span class="arrow">→</span>
       </a>
     </div>
@@ -101,17 +102,17 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="arohara">வெற்றிவேல் முருகனுக்கு அரோகரா!</p>
-    <p>அன்பும் பக்தியும் உங்கள் உள்ளத்தில் நிறையட்டும். ஓம் சரவணபவ!</p>
+    <p class="arohara" data-en="Vetrivel Muruganukku Arohara!">வெற்றிவேல் முருகனுக்கு அரோகரா!</p>
+    <p data-en="May love and devotion fill your heart. Om Saravanabhava!">அன்பும் பக்தியும் உங்கள் உள்ளத்தில் நிறையட்டும். ஓம் சரவணபவ!</p>
     <p class="small muted" id="source"></p>
-    <p class="small muted">தொடர்புக்கு: <a class="js-mail" href="#"></a></p>
-    <p class="tiny muted">முருகன் ஓவியம்: ராஜா ரவி வர்மா (பொதுக் களம்), <a href="https://commons.wikimedia.org/wiki/File:Murugan_by_Raja_Ravi_Varma.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></p>
+    <p class="small muted" data-en="Contact: &lt;a class=&quot;js-mail&quot; href=&quot;#&quot;&gt;&lt;/a&gt;">தொடர்புக்கு: <a class="js-mail" href="#"></a></p>
+    <p class="tiny muted" data-en="Murugan painting: Raja Ravi Varma (public domain), &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Murugan_by_Raja_Ravi_Varma.jpg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Wikimedia Commons&lt;/a&gt;">முருகன் ஓவியம்: ராஜா ரவி வர்மா (பொதுக் களம்), <a href="https://commons.wikimedia.org/wiki/File:Murugan_by_Raja_Ravi_Varma.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></p>
   </div>
 </footer>
 
-<script src="assets/js/config.js?v=20261121f"></script>
-<script src="assets/js/panchang.js?v=20261121f"></script>
-<script src="assets/js/decor.js?v=20261121f"></script>
-<script src="assets/js/app.js?v=20261121f"></script>
+<script src="assets/js/config.js?v=20261121h"></script>
+<script src="assets/js/panchang.js?v=20261121h"></script>
+<script src="assets/js/decor.js?v=20261121h"></script>
+<script src="assets/js/app.js?v=20261121h"></script>
 </body>
 </html>

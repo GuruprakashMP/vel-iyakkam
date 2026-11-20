@@ -8,6 +8,15 @@
   var TA_MONTHS = ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்', 'ஜூலை',
                    'ஆகஸ்ட்', 'செப்டம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'];
   var TA_DAYS = ['ஞாயிறு', 'திங்கள்', 'செவ்வாய்', 'புதன்', 'வியாழன்', 'வெள்ளி', 'சனி'];
+  var EN_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var EN_DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var NOTE_EN = { 'கந்த சஷ்டி': 'Kanda Sashti' };
+
+  /* Language: Tamil by default; the header button switches to English and the
+     browser remembers the choice. T(tamil, english) picks the current one. */
+  var LANG = (function () { try { return localStorage.getItem('vi-lang') === 'en' ? 'en' : 'ta'; } catch (e) { return 'ta'; } })();
+  function T(ta, en) { return LANG === 'en' ? en : ta; }
+  function monthName(i) { return (LANG === 'en' ? EN_MONTHS : TA_MONTHS)[i]; }
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -18,7 +27,7 @@
   function rupees(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function dmy(d) { return d ? pad(d.getDate()) + '-' + pad(d.getMonth() + 1) + '-' + d.getFullYear() : ''; }
-  function longDate(d) { return d.getDate() + ' ' + TA_MONTHS[d.getMonth()] + ' ' + d.getFullYear(); }
+  function longDate(d) { return d.getDate() + ' ' + monthName(d.getMonth()) + ' ' + d.getFullYear(); }
   function today() { var t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
 
   /* ---------- reading values ---------- */
@@ -71,11 +80,11 @@
   function parseLedger(t) {
     var L = t.labels;
     var iD = col(L, /date|தேதி/), iC = col(L, /code|குறியீடு/), iI = col(L, /receiv|வரவு/),
-        iO = col(L, /spent|செலவு/), iN = col(L, /detail|note|விவர/);
+        iO = col(L, /spent|செலவு/), iN = col(L, /detail|note|விவர/), iE = col(L, /english|ஆங்கில/);
     if (iI < 0 || iO < 0) throw new Error('Accounts columns not found');
     return t.rows.map(function (r) {
       var x = { date: toDate(pick(r, iD)), code: toStr(pick(r, iC)).toUpperCase(),
-                in: toNum(pick(r, iI)), out: toNum(pick(r, iO)), details: toStr(pick(r, iN)) };
+                in: toNum(pick(r, iI)), out: toNum(pick(r, iO)), details: toStr(pick(r, iN)), detailsEn: toStr(pick(r, iE)) };
       /* A row with a date and details but no code and no amounts = a Sashti whose
          spending amount is not known yet ("to be updated"). */
       x.pending = !!x.date && !x.in && !x.out && !x.code && !!x.details;
@@ -97,11 +106,11 @@
   function parseHelp(t) {
     var L = t.labels;
     var iD = col(L, /date|தேதி/), iS = col(L, /student|மாணவ/),
-        iW = col(L, /given|what|பொருள்/), iN = col(L, /note|குறிப்பு/);
+        iW = col(L, /given|what|பொருள்/), iN = col(L, /note|குறிப்பு/), iE = col(L, /english|ஆங்கில/);
     if (iD < 0 || iS < 0) throw new Error('Help columns not found');
     var list = t.rows.map(function (r) {
       return { date: toDate(pick(r, iD)), students: toNum(pick(r, iS)),
-               given: toStr(pick(r, iW)), note: toStr(pick(r, iN)) };
+               given: toStr(pick(r, iW)), givenEn: toStr(pick(r, iE)), note: toStr(pick(r, iN)) };
     }).filter(function (h) { return h.date && h.students > 0; });
     if (!list.length) throw new Error('no help rows');
     return list;
@@ -110,13 +119,13 @@
     return {
       ledger: s.ledger.map(function (x) {
         return { date: toDate(x.date), code: x.code || '', in: x.in || 0, out: x.out || 0,
-                 details: x.details || '', pending: !!x.pending };
+                 details: x.details || '', detailsEn: x.detailsEn || '', pending: !!x.pending };
       }),
       members: s.members.map(function (m) {
         return { code: m.code, name: m.name, joined: toDate(m.joined), photo: m.photo || '' };
       }),
       help: (s.help || []).map(function (h) {
-        return { date: toDate(h.date), students: h.students, given: h.given || '', note: h.note || '' };
+        return { date: toDate(h.date), students: h.students, given: h.given || '', givenEn: h.givenEn || '', note: h.note || '' };
       }),
       asOf: toDate(s.asOf)
     };
@@ -154,8 +163,9 @@
     cycles.forEach(function (c) { if (c.closing != null) lastKnown = c.date; });
     return { cycles: cycles, open: cur, firstPending: firstPending, lastKnown: lastKnown };
   }
-  var TBU = '<span class="pend">புதுப்பிக்கப்படும்</span>';
-  function money(v) { return v == null ? TBU : rupees(v); }
+  function tbu() { return '<span class="pend">' + T('புதுப்பிக்கப்படும்', 'To be updated') + '</span>'; }
+  function money(v) { return v == null ? tbu() : rupees(v); }
+  function det(r) { return (LANG === 'en' && r.detailsEn) || r.details; }
 
   /* ---------- names and photos ---------- */
 
@@ -203,10 +213,12 @@
     if (!s) return;
     var d = new Date(s.year, s.month - 1, s.day);
     var days = Math.round((d - today()) / 864e5);
-    $('nsDate').textContent = longDate(d) + ', ' + TA_DAYS[d.getDay()] + (s.isKandaSashti ? ' · கந்த சஷ்டி' : '');
-    $('nsPlace').textContent = C.place.nameTa + ' சூரிய உதயத்தின்படி கணக்கிடப்பட்டது';
-    $('nsCount').innerHTML = days === 0 ? '<b>இன்று</b>' : days === 1 ? '<b>நாளை</b>'
-      : '<b>' + days + '</b><span>நாட்களில்</span>';
+    $('nsDate').textContent = longDate(d) + ', ' + (LANG === 'en' ? EN_DAYS : TA_DAYS)[d.getDay()] +
+      (s.isKandaSashti ? T(' · கந்த சஷ்டி', ' · Kanda Sashti') : '');
+    $('nsPlace').textContent = T(C.place.nameTa + ' சூரிய உதயத்தின்படி கணக்கிடப்பட்டது',
+                                 'Calculated for sunrise at ' + (C.place.nameEn || 'Tiruchendur'));
+    $('nsCount').innerHTML = days === 0 ? '<b>' + T('இன்று', 'Today') + '</b>' : days === 1 ? '<b>' + T('நாளை', 'Tomorrow') + '</b>'
+      : '<b>' + days + '</b><span>' + T('நாட்களில்', 'days to go') + '</span>';
   }
 
   function renderHelp(help) {
@@ -214,9 +226,9 @@
     for (var i = help.length - 1; i >= 0; i--) {
       var h = help[i];
       rows.push('<li><div class="no">' + (i + 1) + '</div>' +
-        '<div class="when">' + longDate(h.date) + (h.note ? '<span class="tag">' + esc(h.note) + '</span>' : '') + '</div>' +
-        '<div class="kids">' + h.students + '<small>' + (h.students > 1 ? 'மாணவர்கள்' : 'மாணவர்') + '</small></div>' +
-        '<div class="what">' + esc(h.given || 'கல்விப் பொருள்கள்') + '</div></li>');
+        '<div class="when">' + longDate(h.date) + (h.note ? '<span class="tag">' + esc(T(h.note, NOTE_EN[h.note] || h.note)) + '</span>' : '') + '</div>' +
+        '<div class="kids">' + h.students + '<small>' + (h.students > 1 ? T('மாணவர்கள்', 'students') : T('மாணவர்', 'student')) + '</small></div>' +
+        '<div class="what">' + esc((LANG === 'en' && h.givenEn) || h.given || T('கல்விப் பொருள்கள்', 'Education materials')) + '</div></li>');
     }
     $('helpList').innerHTML = rows.join('');
   }
@@ -231,45 +243,48 @@
   /* Accounts page: one card per Sashti; open it to see who gave and what was spent. */
   function renderAccounts(R, members) {
     function card(c, n, isOpen) {
-      var title = isOpen ? 'தற்போது' : n + 'வது சஷ்டி';
-      var sub = isOpen ? 'கடைசி சஷ்டிக்குப் பின் வந்தது' : dmy(c.date);
+      var title = isOpen ? T('தற்போது', 'Now') : T(n + 'வது சஷ்டி', 'Sashti ' + n);
+      var sub = isOpen ? T('கடைசி சஷ்டிக்குப் பின் வந்தது', 'Received since the last Sashti') : dmy(c.date);
       var gifts = c.gifts.map(function (r) {
-        var who = r.code ? esc(giverName(r.code, members)) : esc(r.details || 'நன்கொடை');
+        var who = r.code ? esc(giverName(r.code, members)) : esc(det(r) || T('நன்கொடை', 'Donation'));
         return '<div class="line"><span class="d">' + dmy(r.date) + '</span><span class="who">' + who +
           '</span><span class="a">' + rupees(r.in) + '</span></div>';
       }).join('');
       var spends = c.spends.map(function (r) {
         return '<div class="line"><span class="d">' + dmy(r.date) + '</span><span class="who">' +
-          esc(r.pending ? 'கல்விப் பொருள்கள்' : (r.details || 'சஷ்டி செலவு')) + '</span><span class="a">' +
-          (r.pending ? TBU : rupees(r.out)) + '</span></div>';
+          esc(r.pending ? T('கல்விப் பொருள்கள்', 'Education materials') : (det(r) || T('சஷ்டி செலவு', 'Sashti spending'))) + '</span><span class="a">' +
+          (r.pending ? tbu() : rupees(r.out)) + '</span></div>';
       }).join('');
       return '<details class="cyc' + (c.pending ? ' pending' : '') + '">' +
         '<summary><span class="no">' + (isOpen ? '•' : n) + '</span>' +
         '<span class="t"><b>' + title + '</b><span>' + sub + '</span></span>' +
-        '<span class="fig"><div><small>வரவு</small><b class="in">' + rupees(c.in) + '</b></div>' +
-        (isOpen ? '' : '<div><small>செலவு</small><b class="out">' + money(c.out) + '</b></div>') +
-        (c.closing == null ? '' : '<div><small>இருப்பு</small><b>' + money(c.closing) + '</b></div>') + '</span>' +
-        '<span class="chev"><span class="o">விவரம் பார்க்க ▾</span><span class="c">மூடு ▴</span></span></summary>' +
+        '<span class="fig"><div><small>' + T('வரவு', 'Received') + '</small><b class="in">' + rupees(c.in) + '</b></div>' +
+        (isOpen ? '' : '<div><small>' + T('செலவு', 'Spent') + '</small><b class="out">' + money(c.out) + '</b></div>') +
+        (c.closing == null ? '' : '<div><small>' + T('இருப்பு', 'Balance') + '</small><b>' + money(c.closing) + '</b></div>') + '</span>' +
+        '<span class="chev"><span class="o">' + T('விவரம் பார்க்க', 'Show details') + ' ▾</span><span class="c">' + T('மூடு', 'Close') + ' ▴</span></span></summary>' +
         '<div class="cyc-body">' +
-        '<div class="bal"><span>முன் இருப்பு</span><span>' + money(c.opening) + '</span></div>' +
-        '<h4>வேல் நிதி வழங்கியோர் (' + c.gifts.length + ')</h4>' + (gifts || '<p class="muted small">இல்லை</p>') +
-        (isOpen ? '' : '<h4>செலவு</h4>' + spends) +
-        '<div class="bal"><span>' + (isOpen ? 'தற்போதைய இருப்பு' : 'மீதி இருப்பு') + '</span><span>' + money(c.closing) + '</span></div>' +
+        '<div class="bal"><span>' + T('முன் இருப்பு', 'Opening balance') + '</span><span>' + money(c.opening) + '</span></div>' +
+        '<h4>' + T('வேல் நிதி வழங்கியோர்', 'Given by') + ' (' + c.gifts.length + ')</h4>' + (gifts || '<p class="muted small">' + T('இல்லை', 'None') + '</p>') +
+        (isOpen ? '' : '<h4>' + T('செலவு', 'Spent on') + '</h4>' + spends) +
+        '<div class="bal"><span>' + (isOpen ? T('தற்போதைய இருப்பு', 'Balance now') : T('மீதி இருப்பு', 'Balance left')) + '</span><span>' + money(c.closing) + '</span></div>' +
         '</div></details>';
     }
     var html = [];
     if (R.open.in > 0) html.push(card(R.open, 0, true));
     for (var i = R.cycles.length - 1; i >= 0; i--) html.push(card(R.cycles[i], i + 1, false));
     $('accList').innerHTML = html.join('');
-    $('accNote').textContent = (C.showNamesInAccounts ? '' : 'வழங்கியோர் உறுப்பினர் குறியீட்டால் குறிக்கப்படுகின்றனர். ') +
-      (R.firstPending ? dmy(R.firstPending) + ' முதல் உள்ள சஷ்டிகளின் செலவுத் தொகை புதுப்பிக்கப்பட உள்ளது.' : '');
-    var btn = $('toggleAll'), all = false;
-    btn.addEventListener('click', function () {
-      all = !all;
-      Array.prototype.forEach.call(document.querySelectorAll('.cyc'), function (d) { d.open = all; });
-      btn.textContent = all ? 'அனைத்தையும் மூடு' : 'அனைத்தையும் திற';
-    });
+    $('accNote').textContent = (C.showNamesInAccounts ? '' : T('வழங்கியோர் உறுப்பினர் குறியீட்டால் குறிக்கப்படுகின்றனர். ', 'Givers are shown by member code. ')) +
+      (R.firstPending ? T(dmy(R.firstPending) + ' முதல் உள்ள சஷ்டிகளின் செலவுத் தொகை புதுப்பிக்கப்பட உள்ளது.',
+                          'Spending for the Sashtis from ' + dmy(R.firstPending) + ' is still to be updated.') : '');
+    allOpen = false; toggleLabel();
   }
+  var allOpen = false;
+  function toggleLabel() { var b = $('toggleAll'); if (b) b.textContent = allOpen ? T('அனைத்தையும் மூடு', 'Close all') : T('அனைத்தையும் திற', 'Open all'); }
+  if ($('toggleAll')) $('toggleAll').addEventListener('click', function () {
+    allOpen = !allOpen;
+    Array.prototype.forEach.call(document.querySelectorAll('.cyc'), function (d) { d.open = allOpen; });
+    toggleLabel();
+  });
 
   function visibleMembers(members) {
     var hide = (C.hideMembers || []).map(function (c) { return c.toUpperCase(); });
@@ -282,12 +297,12 @@
     var box = $('people');
     box.innerHTML = shown.map(function (x) {
       var m = x.m, n = x.n;
-      var j = m.joined ? TA_MONTHS[m.joined.getMonth()] + ' ' + m.joined.getFullYear() : '';
+      var j = m.joined ? monthName(m.joined.getMonth()) + ' ' + m.joined.getFullYear() : '';
       return '<figure class="person"><div class="ph"><span>' + esc(initials(n)) + '</span>' +
         '<img src="' + esc(photoUrl(m)) + '" alt="' + esc(n) + '" loading="lazy"></div>' +
         '<figcaption><b>' + esc(n) + '</b>' +
         (C.showCodesOnMembers ? '<span>' + esc(m.code) + '</span>' : '') +
-        (j ? '<span>' + j + ' முதல்</span>' : '') + '</figcaption></figure>';
+        (j ? '<span>' + T(j + ' முதல்', 'Since ' + j) + '</span>' : '') + '</figcaption></figure>';
     }).join('');
     Array.prototype.forEach.call(box.querySelectorAll('img'), function (img) {
       img.addEventListener('error', function () { img.remove(); });
@@ -324,9 +339,38 @@
 
   /* ---------- start ---------- */
 
+  /* Fixed text in the pages carries its English in data-en; the Tamil is kept in data-ta. */
+  function applyStatic() {
+    document.documentElement.lang = LANG;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-en]'), function (el) {
+      if (el.getAttribute('data-ta') == null) el.setAttribute('data-ta', el.innerHTML);
+      el.innerHTML = LANG === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ta');
+    });
+    var b = $('langBtn');
+    if (b) { b.textContent = LANG === 'en' ? 'தமிழ்' : 'English'; b.setAttribute('aria-label', LANG === 'en' ? 'தமிழில் படிக்க' : 'Read in English'); }
+  }
+
   var page = document.body.getAttribute('data-page') || 'home';
+  var state = null;
+  function renderAll() {
+    if (!state) return;
+    var res = state;
+    if (page === 'accounts') renderAccounts(compute(res[0]), res[1]);
+    else if (page === 'members') renderPeople(res[0]);
+    else { renderStats(res[1], visibleMembers(res[0])); renderHelp(res[1]); }
+    sourceNote();
+  }
+  applyStatic();
   setLinks();
   if (page === 'home') renderSashti();
+  if ($('langBtn')) $('langBtn').addEventListener('click', function () {
+    LANG = LANG === 'en' ? 'ta' : 'en';
+    try { localStorage.setItem('vi-lang', LANG); } catch (e) { /* private mode: switch for this visit only */ }
+    applyStatic();
+    setLinks();
+    if (page === 'home') renderSashti();
+    renderAll();
+  });
   if (page === 'contact') return;
 
   var snap = fetch('data/snapshot.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(fromSnapshot);
@@ -339,14 +383,16 @@
   function sourceNote() {
     if (!wanted || !$('source')) return;
     if (live === wanted) {
-      $('source').textContent = 'எல்லா விவரங்களும் Google Sheet-இலிருந்து நேரடியாக வருகின்றன.';
+      $('source').textContent = T('எல்லா விவரங்களும் Google Sheet-இலிருந்து நேரடியாக வருகின்றன.', 'Everything here comes straight from our Google Sheet.');
       return;
     }
     snap.then(function (s) {
-      $('source').textContent = 'சில விவரங்கள் ' + dmy(s.asOf) + ' அன்று சேமித்த பதிவிலிருந்து காட்டப்படுகின்றன.';
+      $('source').textContent = T('சில விவரங்கள் ' + dmy(s.asOf) + ' அன்று சேமித்த பதிவிலிருந்து காட்டப்படுகின்றன.',
+                                  'Some details are shown from a copy saved on ' + dmy(s.asOf) + '.');
       if (!live) {
         var n = $('notice');
-        n.textContent = 'நேரடி Google Sheet இணைப்பு கிடைக்கவில்லை. ' + dmy(s.asOf) + ' அன்று சேமித்த பதிவு காட்டப்படுகிறது.';
+        n.textContent = T('நேரடி Google Sheet இணைப்பு கிடைக்கவில்லை. ' + dmy(s.asOf) + ' அன்று சேமித்த பதிவு காட்டப்படுகிறது.',
+                          'The live Google Sheet could not be reached. Showing the copy saved on ' + dmy(s.asOf) + '.');
         n.hidden = false;
       }
     });
@@ -359,18 +405,11 @@
     : [tab(C.membersTab, parseMembers, 'members'), tab(C.helpTab, parseHelp, 'help')];
 
   Promise.all(jobs).then(function (res) {
-    if (page === 'accounts') {
-      renderAccounts(compute(res[0]), res[1]);
-    } else if (page === 'members') {
-      renderPeople(res[0]);
-    } else {
-      renderStats(res[1], visibleMembers(res[0]));
-      renderHelp(res[1]);
-    }
-    sourceNote();
+    state = res;
+    renderAll();
   }).catch(function (e) {
     var n = $('notice');
-    n.textContent = 'விவரங்களைப் படிக்க முடியவில்லை. பின்னர் மீண்டும் முயலவும்.';
+    n.textContent = T('விவரங்களைப் படிக்க முடியவில்லை. பின்னர் மீண்டும் முயலவும்.', 'Could not read the details. Please try again later.');
     n.hidden = false;
     console.error(e);
   });

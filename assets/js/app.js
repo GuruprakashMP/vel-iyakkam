@@ -293,7 +293,25 @@
       img.addEventListener('error', function () { img.remove(); });
       img.addEventListener('load', function () { img.classList.add('ok'); });
     });
+    fitNames(box);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fitNames(box); });
+    if (!fitNames.bound) {
+      fitNames.bound = true;
+      var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(function () { fitNames(box); }, 150); });
+    }
     return shown;
+  }
+
+  /* Keep every name on one line: shrink the text of a long name until it fits its card. */
+  function fitNames(box) {
+    Array.prototype.forEach.call(box.querySelectorAll('.person figcaption b'), function (el) {
+      el.style.fontSize = '';
+      var size = parseFloat(getComputedStyle(el).fontSize);
+      while (el.scrollWidth > el.clientWidth + 0.5 && size > 10) {
+        size -= 0.5;
+        el.style.fontSize = size + 'px';
+      }
+    });
   }
 
   function setLinks() {

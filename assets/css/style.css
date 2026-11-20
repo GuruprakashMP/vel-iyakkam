@@ -154,7 +154,7 @@ details.more .table-wrap{margin-top:6px}
 .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .2s}
 .ph img.ok{opacity:1}
 .person figcaption{display:flex;flex-direction:column;line-height:1.45}
-.person figcaption b{font-size:.95rem}
+.person figcaption b{display:block;font-size:.95rem;white-space:nowrap;overflow:hidden}
 .person figcaption span{font-size:.78rem;color:var(--ink-3)}
 
 /* join */

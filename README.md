@@ -41,6 +41,11 @@ data/snapshot.json     saved copy of the sheet, shown only if Google cannot be r
 photos/VEL-0xx.jpg     member photos, named by code
 ```
 
+## Changing the code
+
+After editing a CSS or JS file, change the `?v=` number on its line in `index.html`,
+otherwise visitors' browsers keep the old file for up to 10 minutes.
+
 ## Photos
 
 Save each photo as `photos/<code>.jpg` (for example `photos/VEL-007.jpg`), square if possible, about 400 x 400 px.

@@ -1,96 +1,56 @@
 # வேல் இயக்கம் · Vel Iyakkam
 
-Website for **Vel Iyakkam**, a trust running in the name of Lord Murugan that supports the
-education of children raised by a single parent. Every month on **Sashti day** the collected
-amount is spent, and every rupee in and out is published openly — using **donor codes, never names**.
-
 🌐 **https://guruprakashmp.github.io/vel-iyakkam/**
 
-📖 **[தமிழில் முழு கையேடு — docs/SETUP-TAMIL.md](docs/SETUP-TAMIL.md)** ← start here
+One page: live totals, next Sashti, Sashti-wise accounts, "check your payments" by code, and the members wall.
 
----
+## How the data flows
 
-## What the site does
+```
+Google Form  ->  "Members Form (Responses)" sheet   (private: phone, email, address stay here)
+                       | column A code + name only (IMPORTRANGE)
+                       v
+"Vel Fund" sheet:  Accounts tab  +  Members tab     (shared "anyone with the link: viewer")
+                       |
+                       v
+Website reads both tabs on every visit and calculates everything.
+```
 
-| Section | Description |
+Nobody edits the website for the monthly work. Everything happens in the **Vel Fund** sheet:
+
+| When | What to type in the `Accounts` tab (add at the bottom) |
 |---|---|
-| **முகப்பு** / Home | Live totals — collected, given, balance — and a countdown to the next Sashti |
-| **நன்கொடை கணக்கு** / Accounts | Code-wise donations, expenses, monthly summary with running balance, CSV export, print |
-| **சஷ்டி நாட்காட்டி** / Sashti calendar | Sashti dates **calculated from scratch**, years ahead, with Kanda Sashti marked and `.ics` export |
-| **கல்வி வழிகாட்டி** / Career guide | What to study after 12th — courses, entrance exams, scholarships, practical tips, in Tamil |
-| **கதைக் களஞ்சியம்** / Story library | Moral and spiritual stories being collected for a future book |
+| A member pays | `Date`, `Member Code`, `Received ₹` |
+| Sashti day spending | `Date`, `Spent ₹`, `Details` (leave Member Code empty) |
 
-Tamil is the default language; a single button switches the whole site to English.
-Dark mode, mobile layout, and printing are all supported.
+No Total / Remaining rows and no splitting a payment into a/b: the `Balance` column and the website work it out.
+Rows are read in order, so always add at the bottom and never sort.
 
----
+A new member is added by giving them a code (`VEL-0xx`) in column A of the form responses sheet.
+They then appear in the `Members` tab and on the website automatically.
 
-## How it is built
-
-Plain HTML, CSS and JavaScript. **No build step, no framework, no server, no database, no cost.**
-GitHub Pages serves the files exactly as they are in this repository.
+## Files
 
 ```
-index.html  donations.html  calendar.html  guidance.html  stories.html  about.html
-assets/
-  css/style.css        design system (light + dark)
-  js/config.js         ← the only file you normally edit
-  js/i18n.js           every Tamil and English string
-  js/panchang.js       Sashti / tithi astronomy engine
-  js/data.js           Google Sheets CSV loader
-  js/app.js            header, footer, language, theme
-data/
-  *.sample.csv         fallback data, used until your Sheet is connected
-  guidance.json        career-guidance content
-docs/SETUP-TAMIL.md    the handbook (Tamil)
+index.html             the page
+assets/js/config.js    sheet ID, form link, WhatsApp link, privacy switches  <- the only file to edit
+assets/js/app.js       reads the sheet, does the sums, draws the page
+assets/js/panchang.js  Sashti date calculation (sunrise at Tiruchendur)
+assets/css/style.css   look (follows the phone's light/dark setting)
+data/snapshot.json     saved copy of the sheet, shown only if Google cannot be reached
+photos/VEL-0xx.jpg     member photos, named by code
 ```
 
-### Data flow
+## Photos
 
-```
-Google Sheet  ──published as CSV──►  browser fetches  ──►  page renders
-```
+Save each photo as `photos/<code>.jpg` (for example `photos/VEL-007.jpg`), square if possible, about 400 x 400 px.
+On GitHub: open the `photos` folder, **Add file -> Upload files**, drop the files, **Commit**.
+Without a photo the member's initials are shown.
 
-Nothing is stored on a server. If a Sheet link is missing or fails, the site falls back
-to the sample CSVs in `data/` so a page is never broken.
+## Privacy
 
----
-
-## The Sashti calculation
-
-Sashti dates are **not** stored in a file — they are computed in the browser:
-
-- **Sun's apparent longitude** — Meeus, *Astronomical Algorithms*, ch. 25
-- **Moon's longitude** — Meeus ch. 47, full 60-term series
-- **Tithi** = `floor(((moon − sun) mod 360) / 12)`; Shukla Shashti is index 5 (elongation 60°–72°)
-- **Sunrise** — the standard sunrise equation, for the configured latitude/longitude
-- **The Sashti day** is the civil date whose **sunrise falls inside the Shashti tithi** — the Tamil convention
-- **Kanda Sashti** is the Shashti of the lunar month whose new moon fell with the Sun in Thulam (Aippasi amavasai)
-
-Accuracy is better than about a minute. Verified against traditional dates:
-
-| Year | Computed Kanda Sashti |
-|---|---|
-| 2024 | 7 November |
-| 2025 | 27 October |
-| 2026 | 15 November |
-| 2027 | 4 November |
-
-Days where the tithi begins or ends within half an hour of sunrise are flagged internally as
-`borderline` — those are exactly the days on which two panchangams can legitimately differ.
-The default location is **Tiruchendur**; change it in `config.js`.
-
----
-
-## Privacy by design
-
-- Donor **names never appear** anywhere in this repository or on the site — only codes (`VI-001`).
-- Children who receive help are also referred to only by code (`ST-01`).
-- Keep the code ↔ name register **outside** this repo and outside the published Sheet.
-- Amounts are public so that the accounts are auditable; the identity behind each amount is not,
-  so that nobody feels they gave too little or too much.
-
----
+- Phone, email, address and date of birth never leave the private form sheet.
+- Accounts show member codes, not names (`showNamesInAccounts` in `config.js`).
 
 ## Local preview
 
@@ -98,11 +58,4 @@ The default location is **Tiruchendur**; change it in `config.js`.
 node .claude/serve.js .
 ```
 
-Then open <http://localhost:4173>.
-
----
-
-## Licence
-
-Content (stories, guidance text) © Vel Iyakkam. The code may be reused freely by any
-trust that wants to run its accounts this openly.
+Open http://localhost:4173

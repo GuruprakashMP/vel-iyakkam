@@ -4,212 +4,137 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>வேல் இயக்கம் · Vel Iyakkam</title>
-<meta name="description" content="வேல் இயக்கம் — முருகன் அருளில் இயங்கும் அறக்கட்டளை. ஒவ்வொரு சஷ்டி நாளிலும் தனித்து வளர்க்கும் பெற்றோரின் குழந்தைகளுக்கு கல்வி உதவி. வெளிப்படையான கணக்கு.">
+<meta name="description" content="வேல் இயக்கம்: முருக பக்தர்களின் பக்தி மற்றும் சேவை இயக்கம். ஒவ்வொரு ரூபாயின் வரவும் செலவும் வெளிப்படையாக.">
 <meta property="og:title" content="வேல் இயக்கம் · Vel Iyakkam">
-<meta property="og:description" content="Education support for children of single parents, every Sashti day. Fully open accounts.">
+<meta property="og:description" content="A devotion and service movement of Murugan devotees. Every rupee in and out, shown openly.">
 <meta property="og:type" content="website">
+<meta name="theme-color" content="#8C1A08">
 <link rel="icon" href="assets/img/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#">
+      <img src="assets/img/favicon.svg" alt="" width="36" height="36">
+      <span>வேல் இயக்கம்</span>
+    </a>
+    <nav class="nav">
+      <a href="#accounts">கணக்கு</a>
+      <a href="#members">உறுப்பினர்கள்</a>
+      <a class="nav-join" href="#join">சேர</a>
+    </nav>
+  </div>
+</header>
+
 <main>
 
-  <!-- ================= HERO ================= -->
   <section class="hero">
     <div class="wrap">
-      <div class="hero-in">
-        <span class="eyebrow" data-i18n="home.eyebrow"></span>
-        <h1 data-i18n="home.h1"></h1>
-        <p data-i18n="home.lead"></p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="donations.html" data-i18n="home.cta1"></a>
-          <a class="btn btn-ghost" href="calendar.html" data-i18n="home.cta2"></a>
-        </div>
+      <p class="om">ஓம் சரவணபவ</p>
+      <h1>வேல் இயக்கம்</h1>
+      <p class="lead">முருக பக்தர்களின் வாழ்வாதாரத் தேவைகளுக்கு உதவ, நாம் அனைவரும் ஒன்றுசேர்வோம்!
+        வேல் இயக்கம் ஒரு பக்தி மற்றும் சேவை இயக்கம்.</p>
+      <div class="cta">
+        <a class="btn btn-gold js-join" href="#">உறுப்பினராகச் சேர</a>
+        <a class="btn btn-line js-wa" href="#">WhatsApp குழு</a>
       </div>
     </div>
   </section>
 
-  <!-- ================= LIVE NUMBERS ================= -->
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="kicker" data-i18n="home.stats.kicker"></span>
+  <div id="notice" class="notice wrap" hidden></div>
+
+  <section class="wrap stats" aria-label="Summary">
+    <div class="stat"><span class="k">மொத்த வரவு</span><span class="v" id="sIn">…</span><span class="e">Total received</span></div>
+    <div class="stat"><span class="k">மொத்த செலவு</span><span class="v" id="sOut">…</span><span class="e">Total spent</span></div>
+    <div class="stat stat-hl"><span class="k">கையிருப்பு</span><span class="v" id="sBal">…</span><span class="e">Balance in hand</span></div>
+    <div class="stat"><span class="k">உறுப்பினர்கள்</span><span class="v" id="sMem">…</span><span class="e">Members</span></div>
+  </section>
+
+  <section class="wrap">
+    <div class="sashti">
+      <div>
+        <span class="k">அடுத்த சஷ்டி · Next Sashti</span>
+        <div class="d" id="nsDate">…</div>
+        <div class="muted small" id="nsPlace"></div>
       </div>
-      <div class="grid grid-3" id="statGrid">
-        <div class="stat"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="height:30px;margin-top:10px"></div></div>
-        <div class="stat"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="height:30px;margin-top:10px"></div></div>
-        <div class="stat"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="height:30px;margin-top:10px"></div></div>
-      </div>
-      <p class="tiny muted" id="sampleNote" style="margin-top:12px" hidden></p>
+      <div class="count" id="nsCount"></div>
     </div>
   </section>
 
-  <!-- ================= NEXT SASHTI ================= -->
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="grid grid-2" style="align-items:stretch">
-        <div class="sashti-next" id="nextSashti">
-          <div class="lbl" data-i18n="home.next.kicker"></div>
-          <div class="date" id="nsDate">…</div>
-          <div class="day" id="nsDay"></div>
-          <div class="countdown" id="nsCountdown"></div>
-        </div>
-        <div class="card" style="display:flex;flex-direction:column;justify-content:center">
-          <span class="kicker" style="color:var(--gold-600);font-weight:800;font-size:.8rem;letter-spacing:.1em" data-i18n="home.what.kicker"></span>
-          <h2 style="margin-top:8px" data-i18n="home.what.h2"></h2>
-          <p class="muted" data-i18n="home.what.p"></p>
-          <div style="margin-top:6px">
-            <a class="btn btn-outline btn-sm" href="calendar.html" data-i18n="home.readmore"></a>
-          </div>
-        </div>
-      </div>
+  <section class="wrap sec" id="accounts">
+    <h2>சஷ்டி வாரியான கணக்கு <small>Accounts by Sashti</small></h2>
+    <p class="muted">ஒவ்வொரு சஷ்டிக்கும் முன் வந்த தொகையும், சஷ்டி நாளில் செய்த செலவும், மீதி இருப்பும்.</p>
+    <div class="table-wrap">
+      <table class="tbl" id="cycleTbl">
+        <thead><tr><th>சஷ்டி</th><th class="n opt">முன் இருப்பு</th><th class="n">வரவு</th><th class="n">செலவு</th><th class="n">இருப்பு</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
+
+    <h3 class="mt">உங்கள் பங்களிப்பு <small>Check your payments</small></h3>
+    <div class="find">
+      <input id="codeIn" type="search" inputmode="text" autocomplete="off" placeholder="குறியீடு, எ.கா. VEL-005" aria-label="Member code">
+      <div id="codeOut" class="muted small"></div>
+    </div>
+
+    <details class="more">
+      <summary>உறுப்பினர் வாரியான மொத்தம் <small>Totals by member code</small></summary>
+      <div class="table-wrap">
+        <table class="tbl" id="memberTbl">
+          <thead><tr><th>குறியீடு</th><th class="n">மொத்தம்</th><th class="n">தவணைகள்</th><th class="n">கடைசியாக</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
+
+    <details class="more" id="ledgerBox">
+      <summary>முழுப் பதிவேடு <small>Every entry</small></summary>
+      <div class="table-wrap">
+        <table class="tbl" id="ledgerTbl">
+          <thead><tr><th>தேதி</th><th>விவரம்</th><th class="n">வரவு</th><th class="n">செலவு</th><th class="n opt">இருப்பு</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </details>
   </section>
 
-  <!-- ================= FOUR PILLARS ================= -->
-  <section class="section">
-    <div class="wrap">
-      <div class="grid grid-2">
-
-        <a class="card card--link" href="donations.html">
-          <div class="card-ico">₹</div>
-          <h3 data-i18n="home.c1.h"></h3>
-          <p class="muted" data-i18n="home.c1.p"></p>
-        </a>
-
-        <a class="card card--link" href="calendar.html">
-          <div class="card-ico">🗓</div>
-          <h3 data-i18n="home.c2.h"></h3>
-          <p class="muted" data-i18n="home.c2.p"></p>
-        </a>
-
-        <a class="card card--link" href="guidance.html">
-          <div class="card-ico">🎓</div>
-          <h3 data-i18n="home.c3.h"></h3>
-          <p class="muted" data-i18n="home.c3.p"></p>
-        </a>
-
-        <a class="card card--link" href="stories.html">
-          <div class="card-ico">📖</div>
-          <h3 data-i18n="home.c4.h"></h3>
-          <p class="muted" data-i18n="home.c4.p"></p>
-        </a>
-
-      </div>
-    </div>
+  <section class="wrap sec" id="members">
+    <h2>எங்கள் உறுப்பினர்கள் <small>Our members</small></h2>
+    <div class="people" id="people"></div>
   </section>
 
-  <!-- ================= JOIN ================= -->
-  <section class="section section--tight">
-    <div class="wrap">
-      <div class="card" style="text-align:center;background:var(--surface-2)">
-        <h2 data-i18n="home.join.h2"></h2>
-        <p class="muted" style="max-width:56ch;margin:0 auto 20px" data-i18n="home.join.p"></p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <a class="btn btn-solid" id="joinBtn" href="about.html" data-i18n="home.join.cta"></a>
-          <a class="btn btn-outline" id="helpBtn" href="about.html" data-i18n="home.help.cta"></a>
-        </div>
+  <section class="wrap sec" id="join">
+    <div class="join">
+      <h2>நீங்களும் சேருங்கள்</h2>
+      <ol class="steps">
+        <li>படிவத்தை நிரப்பி உறுப்பினராகப் பதிவு செய்யுங்கள். உங்களுக்கு ஒரு குறியீடு (VEL-0xx) வழங்கப்படும்.</li>
+        <li>உங்களால் இயன்ற தொகையைப் பங்களிப்பாக வழங்குங்கள்.</li>
+        <li>ஒவ்வொரு சஷ்டி நாளிலும் சேர்ந்த தொகை சேவைக்குச் செலவிடப்படும். கணக்கு இந்தப் பக்கத்தில் வெளிப்படையாக இருக்கும்.</li>
+      </ol>
+      <div class="cta">
+        <a class="btn btn-red js-join" href="#">பதிவு செய்ய</a>
+        <a class="btn btn-ghost js-wa" href="#">WhatsApp குழுவில் இணைய</a>
       </div>
     </div>
   </section>
 
 </main>
 
+<footer class="foot">
+  <div class="wrap">
+    <p>அன்பும் பக்தியும் உங்கள் உள்ளத்தில் நிறையட்டும். ஓம் சரவணபவ!</p>
+    <p class="small muted" id="source"></p>
+    <p class="small muted">தொடர்புக்கு: <a class="js-mail" href="#"></a></p>
+  </div>
+</footer>
+
 <script src="assets/js/config.js"></script>
-<script src="assets/js/i18n.js"></script>
 <script src="assets/js/panchang.js"></script>
-<script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
-<script>
-(function () {
-  'use strict';
-  var stats = null, sashtiList = [], next = null;
-
-  /* ---- Next Sashti ---- */
-  function buildSashti() {
-    var now = new Date();
-    var y = now.getFullYear();
-    sashtiList = VIPanchang.sashtiDates(y, y + 1, VI.cfg.panchang);
-    next = VIPanchang.nextSashti(sashtiList, now);
-    renderSashti();
-    setInterval(renderSashti, 60000);
-  }
-
-  function renderSashti() {
-    if (!next) return;
-    document.getElementById('nsDate').textContent = VI.dateLabel(next.date);
-    var d = document.getElementById('nsDay');
-    d.textContent = VI.weekdayLabel(next.weekday) +
-      (next.isKandaSashti ? ' · ' + VI.t('cal.kanda') : '');
-
-    var target = next.date.getTime() + (6 - VI.cfg.panchang.timezoneOffsetHours) * 3600000;
-    var diff = target - Date.now();
-    var box = document.getElementById('nsCountdown');
-    if (diff <= 0) {
-      box.innerHTML = '<div style="min-width:auto"><b style="font-size:1.15rem">' +
-        VI.esc(VI.t('cal.today')) + '</b></div>';
-      return;
-    }
-    var days = Math.floor(diff / 86400000);
-    var hrs  = Math.floor(diff / 3600000) % 24;
-    var mins = Math.floor(diff / 60000) % 60;
-    box.innerHTML =
-      '<div><b>' + days + '</b><span>' + VI.esc(VI.t('cal.days')) + '</span></div>' +
-      '<div><b>' + hrs  + '</b><span>' + VI.esc(VI.t('cal.hours')) + '</span></div>' +
-      '<div><b>' + mins + '</b><span>' + VI.esc(VI.t('cal.mins')) + '</span></div>';
-  }
-
-  /* ---- Live numbers ---- */
-  function buildStats() {
-    Promise.all([VIData.loadDonations(), VIData.loadExpenses()]).then(function (r) {
-      var don = r[0], exp = r[1];
-      stats = VIData.summarise(don.items, exp.items);
-      if (don.isSample || exp.isSample) {
-        var n = document.getElementById('sampleNote');
-        n.hidden = false;
-        n.textContent = VI.t('c.sample');
-      }
-      renderStats();
-    }).catch(function (e) {
-      console.error(e);
-      document.getElementById('statGrid').innerHTML =
-        '<div class="notice"><span class="notice-ico">!</span><span>' + VI.esc(VI.t('c.error')) + '</span></div>';
-    });
-  }
-
-  function renderStats() {
-    if (!stats) return;
-    var cells = [
-      { k: 'home.stats.collected', v: VI.money(stats.totalIn),  brand: true,
-        sub: stats.monthCount + ' ' + VI.t('home.stats.months') },
-      { k: 'home.stats.spent',     v: VI.money(stats.totalOut),
-        sub: stats.beneficiaryCount + ' ' + VI.t('home.stats.children') },
-      { k: 'home.stats.balance',   v: VI.money(stats.balance),
-        sub: stats.donorCount + ' ' + VI.t('home.stats.donors') }
-    ];
-    document.getElementById('statGrid').innerHTML = cells.map(function (c) {
-      return '<div class="stat' + (c.brand ? ' stat--brand' : '') + '">' +
-        '<div class="stat-label">' + VI.esc(VI.t(c.k)) + '</div>' +
-        '<div class="stat-value">' + VI.esc(c.v) + '</div>' +
-        '<div class="stat-sub">' + VI.esc(c.sub) + '</div></div>';
-    }).join('');
-    var note = document.getElementById('sampleNote');
-    if (!note.hidden) note.textContent = VI.t('c.sample');
-  }
-
-  /* ---- Form links ---- */
-  function wireForms() {
-    if (VI.cfg.forms.joinDonor)   { var a = document.getElementById('joinBtn'); a.href = VI.cfg.forms.joinDonor; a.target = '_blank'; a.rel = 'noopener'; }
-    if (VI.cfg.forms.helpRequest) { var b = document.getElementById('helpBtn'); b.href = VI.cfg.forms.helpRequest; b.target = '_blank'; b.rel = 'noopener'; }
-  }
-
-  document.addEventListener('vi:ready', function () { buildSashti(); buildStats(); wireForms(); });
-  document.addEventListener('vi:langchange', function () { renderSashti(); renderStats(); });
-})();
-</script>
 </body>
 </html>

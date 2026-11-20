@@ -1,21 +1,21 @@
 /* ==========================================================================
-   VEL IYAKKAM — Panchangam engine / பஞ்சாங்கக் கணிப்பு
+   VEL IYAKKAM - Panchangam engine / பஞ்சாங்கக் கணிப்பு
    --------------------------------------------------------------------------
-   Calculates Sashti (Shukla Shashti — the 6th lunar day of the waxing moon)
+   Calculates Sashti (Shukla Shashti - the 6th lunar day of the waxing moon)
    for any range of years, with no data file and no internet.
 
    Method
-     * Sun's apparent longitude  — Meeus, "Astronomical Algorithms", ch. 25
-     * Moon's longitude          — Meeus, ch. 47 (full 60-term ΣL series)
+     * Sun's apparent longitude  - Meeus, "Astronomical Algorithms", ch. 25
+     * Moon's longitude          - Meeus, ch. 47 (full 60-term ΣL series)
      * Tithi  = floor( ((moonLong - sunLong) mod 360) / 12 )
                Shukla Shashti  =  tithi index 5  (elongation 60° … 72°)
-     * Sunrise — the standard sunrise equation (NOAA), for your lat/long
+     * Sunrise - the standard sunrise equation (NOAA), for your lat/long
      * The Sashti DAY is the civil date whose sunrise falls inside the
        Shashti tithi. This is the Tamil convention.
      * Tamil month  = sidereal solar sign (Lahiri ayanamsa).
        Sashti in Aippasi  =  Kanda Sashti / Soorasamharam.
 
-   Accuracy: better than about one minute — far more than enough to pick
+   Accuracy: better than about one minute - far more than enough to pick
    the right calendar date. For a major vratam still cross-check your
    local panchangam once.
    ========================================================================== */
@@ -58,7 +58,7 @@
   }
 
   /* ======================================================================
-     SUN — apparent geometric longitude (Meeus ch. 25)
+     SUN - apparent geometric longitude (Meeus ch. 25)
      ====================================================================== */
   function sunLongitude(jd) {
     var T = (jd - J2000) / 36525;
@@ -73,7 +73,7 @@
   }
 
   /* ======================================================================
-     MOON — longitude (Meeus ch. 47, full main series)
+     MOON - longitude (Meeus ch. 47, full main series)
      Columns: D, M, M', F, coefficient of ΣL (units 1e-6 degree)
      ====================================================================== */
   var ML = [
@@ -128,7 +128,7 @@
   function tithiIndex(jd){ return Math.floor(elongation(jd) / 12); }   // 0..29
 
   /* ======================================================================
-     SUNRISE — sunrise equation, returns Julian Day (UT) of sunrise
+     SUNRISE - sunrise equation, returns Julian Day (UT) of sunrise
      ====================================================================== */
   function sunriseJD(year, month, day, lat, lon) {
     var jdMid = toJD(year, month, day, 0);              // 00:00 UT, ends in .5
@@ -144,14 +144,14 @@
     var cosDec = Math.sqrt(1 - sinDec * sinDec);
     var cosOmega = (sin(-0.833) - sin(lat) * sinDec) / (cos(lat) * cosDec);
 
-    if (cosOmega > 1)  return null;   // polar night  — never relevant in India
+    if (cosOmega > 1)  return null;   // polar night  - never relevant in India
     if (cosOmega < -1) return null;   // midnight sun
     var omega = Math.acos(cosOmega) * R2D;
     return Jtransit - omega / 360;
   }
 
   /* ======================================================================
-     TAMIL MONTH — sidereal solar sign (Lahiri ayanamsa)
+     TAMIL MONTH - sidereal solar sign (Lahiri ayanamsa)
      0 = Chithirai … 6 = Aippasi … 11 = Panguni
      ====================================================================== */
   function ayanamsa(jd){ return 23.8567 + 0.0139694 * ((jd - J2000) / 365.25); }
@@ -160,7 +160,7 @@
   }
 
   /* ======================================================================
-     Find every moment the Moon–Sun elongation crosses `target` degrees
+     Find every moment the Moon-Sun elongation crosses `target` degrees
      ====================================================================== */
   function findCrossings(jdStart, jdEnd, target) {
     var out = [], step = 1.0;
@@ -183,7 +183,7 @@
   }
 
   /* ======================================================================
-     PUBLIC — list of Sashti days between two years (inclusive)
+     PUBLIC - list of Sashti days between two years (inclusive)
      ====================================================================== */
   function sashtiDates(fromYear, toYear, opts) {
     opts = opts || {};
@@ -201,7 +201,7 @@
 
     for (var i = 0; i < starts.length; i++) {
       var t0 = starts[i];
-      // Shashti ends when elongation reaches 72° — about one tithi later
+      // Shashti ends when elongation reaches 72° - about one tithi later
       var ends = findCrossings(t0, t0 + 2, 72);
       var t1 = ends.length ? ends[0] : t0 + 1;
 
@@ -225,7 +225,7 @@
       }
 
       // Tithi kshaya: Shashti began and ended between two sunrises.
-      // Convention — observe on the day that contains the tithi.
+      // Convention - observe on the day that contains the tithi.
       if (chosen === null) {
         chosen = new Date(Date.UTC(localDay.year, localDay.month - 1, localDay.day));
         chosenSunrise = sunriseJD(chosen.getUTCFullYear(), chosen.getUTCMonth() + 1,
@@ -241,7 +241,7 @@
 
       // Kanda Sashti is fixed by the LUNAR month, not the solar one: it is the
       // Shashti of the lunar month whose new moon fell with the Sun in Thulam
-      // (Libra) — i.e. the Aippasi amavasai. Find that new moon.
+      // (Libra) - i.e. the Aippasi amavasai. Find that new moon.
       var newMoon = findCrossings(t0 - 8, t0, 0);
       var nm = newMoon.length ? newMoon[newMoon.length - 1] : t0 - 5;
       var isKanda = tamilMonthIndex(nm) === 6;
@@ -306,7 +306,7 @@
       L.push('DTSTART;VALUE=DATE:' + ymd);
       L.push('DTEND;VALUE=DATE:' + ymd2);
       L.push('SUMMARY:' + name);
-      L.push('DESCRIPTION:Vel Iyakkam — veliyakkam');
+      L.push('DESCRIPTION:Vel Iyakkam - veliyakkam');
       L.push('TRANSP:TRANSPARENT');
       L.push('END:VEVENT');
     });

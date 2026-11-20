@@ -70,11 +70,16 @@
 
   function parseLedger(t) {
     var L = t.labels;
-    var iD = col(L, /date|தேதி/), iI = col(L, /receiv|வரவு/), iO = col(L, /spent|செலவு/);
+    var iD = col(L, /date|தேதி/), iC = col(L, /code|குறியீடு/), iI = col(L, /receiv|வரவு/),
+        iO = col(L, /spent|செலவு/), iN = col(L, /detail|note|விவர/);
     if (iI < 0 || iO < 0) throw new Error('Accounts columns not found');
     return t.rows.map(function (r) {
-      return { date: toDate(pick(r, iD)), in: toNum(pick(r, iI)), out: toNum(pick(r, iO)) };
-    }).filter(function (x) { return x.in > 0 || x.out > 0; });
+      var x = { date: toDate(pick(r, iD)), in: toNum(pick(r, iI)), out: toNum(pick(r, iO)) };
+      /* A row with a date and details but no code and no amounts = a Sashti whose
+         spending amount is not known yet ("to be updated"). */
+      x.pending = !!x.date && !x.in && !x.out && !toStr(pick(r, iC)) && !!toStr(pick(r, iN));
+      return x;
+    }).filter(function (x) { return x.in > 0 || x.out > 0 || x.pending; });
   }
   function parseMembers(t) {
     var L = t.labels;
@@ -103,7 +108,7 @@
   function fromSnapshot(s) {
     return {
       ledger: s.ledger.map(function (x) {
-        return { date: toDate(x.date), in: x.in || 0, out: x.out || 0 };
+        return { date: toDate(x.date), in: x.in || 0, out: x.out || 0, pending: !!x.pending };
       }),
       members: s.members.map(function (m) {
         return { code: m.code, name: m.name, joined: toDate(m.joined), photo: m.photo || '' };
@@ -118,27 +123,35 @@
   /* ---------- the arithmetic ----------
      Rows are read in sheet order. A spending row closes a Sashti; the
      donations after it belong to the next one. */
+  /* Once one Sashti's spending is "to be updated", every balance after it is
+     unknown too, so those show as null ("புதுப்பிக்கப்படும்"). */
   function compute(ledger) {
-    var bal = 0, cycles = [], prevSpend = false, lastEntry = null;
+    var bal = 0, cycles = [], prevSpend = false, unknown = false, firstPending = null;
     var cur = { opening: 0, in: 0, out: 0, date: null };
     ledger.forEach(function (r) {
       if (r.in > 0 && prevSpend) {
-        cur.closing = bal; cycles.push(cur);
-        cur = { opening: bal, in: 0, out: 0, date: null };
+        cur.closing = unknown ? null : bal; cycles.push(cur);
+        cur = { opening: unknown ? null : bal, in: 0, out: 0, date: null };
         prevSpend = false;
       }
       if (r.in > 0) cur.in += r.in;
-      if (r.out > 0) {
-        cur.out += r.out; if (!cur.date) cur.date = r.date;   // a Sashti's date = its first spending row
+      if (r.out > 0 || r.pending) {
+        if (r.pending) { cur.pending = true; unknown = true; if (!firstPending) firstPending = r.date; }
+        else cur.out += r.out;
+        if (!cur.date) cur.date = r.date;   // a Sashti's date = its first spending row
         prevSpend = true;
       }
       bal += r.in - r.out;
-      if (r.date && (!lastEntry || r.date > lastEntry)) lastEntry = r.date;
     });
-    if (prevSpend) { cur.closing = bal; cycles.push(cur); cur = { opening: bal, in: 0, out: 0 }; }
-    cur.closing = bal;
-    return { cycles: cycles, open: cur, lastEntry: lastEntry };
+    if (prevSpend) { cur.closing = unknown ? null : bal; cycles.push(cur); cur = { opening: unknown ? null : bal, in: 0, out: 0 }; }
+    cur.closing = unknown ? null : bal;
+    cycles.forEach(function (c) { if (c.pending) c.out = null; });
+    var lastKnown = null;
+    cycles.forEach(function (c) { if (c.closing != null) lastKnown = c.date; });
+    return { cycles: cycles, open: cur, firstPending: firstPending, lastKnown: lastKnown };
   }
+  var TBU = '<span class="pend">புதுப்பிக்கப்படும்</span>';
+  function money(v) { return v == null ? TBU : rupees(v); }
 
   /* ---------- names and photos ---------- */
 
@@ -208,19 +221,19 @@
     var rows = [];
     if (R.open.in > 0 || !R.cycles.length) {
       rows.push('<tr class="now"><td><b>தற்போது</b><div class="sub">கடைசி சஷ்டிக்குப் பின் வந்தது</div></td>' +
-        '<td class="n opt">' + rupees(R.open.opening) + '</td><td class="n in">' + rupees(R.open.in) +
-        '</td><td class="n">-</td><td class="n"><b>' + rupees(R.open.closing) + '</b></td></tr>');
+        '<td class="n opt">' + money(R.open.opening) + '</td><td class="n in">' + rupees(R.open.in) +
+        '</td><td class="n">-</td><td class="n"><b>' + money(R.open.closing) + '</b></td></tr>');
     }
     for (var i = R.cycles.length - 1; i >= 0; i--) {
       var c = R.cycles[i];
-      rows.push('<tr><td><b>' + (i + 1) + 'வது சஷ்டி</b><div class="sub">' + dmy(c.date) + '</div></td>' +
-        '<td class="n opt">' + rupees(c.opening) + '</td><td class="n in">' + rupees(c.in) +
-        '</td><td class="n out">' + rupees(c.out) + '</td><td class="n"><b>' + rupees(c.closing) + '</b></td></tr>');
+      rows.push('<tr' + (c.pending ? ' class="pending"' : '') + '><td><b>' + (i + 1) + 'வது சஷ்டி</b><div class="sub">' + dmy(c.date) + '</div></td>' +
+        '<td class="n opt">' + money(c.opening) + '</td><td class="n in">' + rupees(c.in) +
+        '</td>' + (c.pending ? '<td class="n" colspan="2">' + TBU + '</td>'
+                   : '<td class="n out">' + money(c.out) + '</td><td class="n"><b>' + money(c.closing) + '</b></td>') + '</tr>');
     }
     document.querySelector('#cycleTbl tbody').innerHTML = rows.join('');
-    $('accNote').textContent = R.lastEntry
-      ? 'கணக்கு ' + dmy(R.lastEntry) + ' வரை பதிவு செய்யப்பட்டுள்ளது. ஒவ்வொரு சஷ்டிக்கும் முன் வந்த மொத்தத் தொகையும் செய்த செலவும் மட்டும்; தனிநபர் தொகைகள் காட்டப்படுவதில்லை.'
-      : '';
+    $('accNote').textContent = 'ஒவ்வொரு சஷ்டிக்கும் முன் வந்த மொத்தத் தொகையும் செய்த செலவும் மட்டும்; தனிநபர் தொகைகள் காட்டப்படுவதில்லை.' +
+      (R.firstPending ? ' ' + dmy(R.firstPending) + ' முதல் உள்ள சஷ்டிகளின் செலவுத் தொகை புதுப்பிக்கப்பட உள்ளது.' : '');
   }
 
   function renderPeople(members) {

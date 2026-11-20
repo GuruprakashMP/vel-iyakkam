@@ -88,7 +88,8 @@ p{margin:0 0 1em}
 .tbl .sub{font-size:.78rem;color:var(--ink-3)}
 .tbl .sub-i{display:block;font-size:.78rem;color:var(--ink-3)}
 .tbl tr.now td{background:var(--cream)}
-.tbl tr.spend td{background:var(--card-2)}
+.tbl tr.pending td{background:var(--card-2)}
+.pend{display:inline-block;padding:1px 8px;border-radius:999px;background:var(--cream);color:var(--warn,#B45309);font-size:.74rem;font-weight:700;white-space:nowrap;border:1px solid var(--gold)}
 @media (max-width:520px){.tbl{font-size:.84rem}.tbl th,.tbl td{padding:8px 7px}.tbl .opt{display:none}}
 
 details.more{margin-top:14px}

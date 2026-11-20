@@ -2,9 +2,11 @@
 
 🌐 **https://guruprakashmp.github.io/vel-iyakkam/**
 
-Two pages:
-- `index.html`: banner (Raja Ravi Varma's Shanmukha painting, hanging lamps, Vel with the rooster flag, hills), help counts, next Sashti, the help list, and the members wall (A to Z).
-- `accounts.html`: one card per Sashti; open it to see who gave (by member code), what was spent, and the balance. A Sashti whose spending is not known yet shows "புதுப்பிக்கப்படும்".
+Four tabs, each its own page:
+- `index.html` (முகப்பு): banner (Raja Ravi Varma's Shanmukha painting, hanging lamps, Vel with the rooster flag, hills), help counts, next Sashti, the help list.
+- `accounts.html` (கணக்கு): one card per Sashti; open it to see who gave (by member code), what was spent, and the balance. A Sashti whose spending is not known yet shows "புதுப்பிக்கப்படும்".
+- `members.html` (உறுப்பினர்கள்): the members wall, A to Z, with photos.
+- `contact.html` (தொடர்பு): how to join, WhatsApp group, e-mail, the form.
 
 ## How the data flows
 

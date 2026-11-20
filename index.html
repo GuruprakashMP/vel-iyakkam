@@ -13,21 +13,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261121a">
+<link rel="stylesheet" href="assets/css/style.css?v=20261121b">
 </head>
 <body data-page="home">
 
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="#">
+    <a class="brand" href="index.html">
       <img src="assets/img/favicon.svg" alt="" width="36" height="36">
       <span>வேல் இயக்கம்</span>
     </a>
-    <nav class="nav">
-      <a href="#help">உதவிகள்</a>
-      <a class="nav-acc" href="accounts.html">கணக்கு</a>
-      <a href="#members">உறுப்பினர்கள்</a>
-      <a class="nav-join" href="#join">சேர</a>
+    <nav class="nav" aria-label="பக்கங்கள்">
+      <a href="index.html" class="on" aria-current="page">முகப்பு</a>
+      <a href="accounts.html">கணக்கு</a>
+      <a href="members.html">உறுப்பினர்கள்</a>
+      <a href="contact.html">தொடர்பு</a>
     </nav>
   </div>
 </header>
@@ -83,31 +83,19 @@
     <p class="muted">ஒவ்வொரு சஷ்டி நாளிலும், உறுப்பினர்களின் பங்களிப்பில் மாணவர்களுக்குக் கல்விப் பொருள்கள் வழங்கப்படுகின்றன.</p>
     <ol class="helplist" id="helpList"></ol>
 
-    <a class="acc-link" href="accounts.html">
-      <span><b>வரவு செலவு கணக்கு</b><small>ஒவ்வொரு சஷ்டிக்கும் வந்த தொகை, வழங்கியோர், செலவு</small></span>
-      <span class="arrow">→</span>
-    </a>
-  </section>
-
-  <section class="wrap sec" id="members">
-    <h2>எங்கள் உறுப்பினர்கள் <small>Our members</small></h2>
-    <div class="people" id="people"></div>
-  </section>
-
-  <section class="wrap sec" id="join">
-    <div class="join">
-      <h2>நீங்களும் சேருங்கள்</h2>
-      <ol class="steps">
-        <li>படிவத்தை நிரப்பி உறுப்பினராகப் பதிவு செய்யுங்கள். உங்களுக்கு ஒரு குறியீடு (VEL-0xx) வழங்கப்படும்.</li>
-        <li>உங்களால் இயன்ற தொகையைப் பங்களிப்பாக வழங்குங்கள்.</li>
-        <li>ஒவ்வொரு சஷ்டி நாளிலும் சேர்ந்த தொகை சேவைக்குச் செலவிடப்படும். கணக்கு இந்தப் பக்கத்தில் வெளிப்படையாக இருக்கும்.</li>
-      </ol>
-      <div class="cta">
-        <a class="btn btn-red js-join" href="#">பதிவு செய்ய</a>
-        <a class="btn btn-ghost js-wa" href="#">WhatsApp குழுவில் இணைய</a>
-      </div>
+    <div class="tab-links">
+      <a class="acc-link" href="accounts.html">
+        <span><b>வரவு செலவு கணக்கு</b><small>ஒவ்வொரு சஷ்டிக்கும் வந்த தொகை, வழங்கியோர், செலவு</small></span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="acc-link" href="members.html">
+        <span><b>எங்கள் உறுப்பினர்கள்</b><small>வேல் இயக்கத்தின் வேர்கள்</small></span>
+        <span class="arrow">→</span>
+      </a>
     </div>
   </section>
+
+
 
 </main>
 
@@ -121,9 +109,9 @@
   </div>
 </footer>
 
-<script src="assets/js/config.js?v=20261121a"></script>
-<script src="assets/js/panchang.js?v=20261121a"></script>
-<script src="assets/js/decor.js?v=20261121a"></script>
-<script src="assets/js/app.js?v=20261121a"></script>
+<script src="assets/js/config.js?v=20261121b"></script>
+<script src="assets/js/panchang.js?v=20261121b"></script>
+<script src="assets/js/decor.js?v=20261121b"></script>
+<script src="assets/js/app.js?v=20261121b"></script>
 </body>
 </html>

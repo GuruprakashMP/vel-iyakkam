@@ -271,11 +271,14 @@
     });
   }
 
-  function renderPeople(members) {
+  function visibleMembers(members) {
     var hide = (C.hideMembers || []).map(function (c) { return c.toUpperCase(); });
-    var shown = members.filter(function (m) { return hide.indexOf(m.code) < 0; })
+    return members.filter(function (m) { return hide.indexOf(m.code) < 0; })
       .map(function (m) { return { m: m, n: niceName(m.name) }; })
       .sort(function (a, b) { return a.n.localeCompare(b.n, 'en', { sensitivity: 'base' }); });
+  }
+  function renderPeople(members) {
+    var shown = visibleMembers(members);
     var box = $('people');
     box.innerHTML = shown.map(function (x) {
       var m = x.m, n = x.n;
@@ -306,6 +309,7 @@
   var page = document.body.getAttribute('data-page') || 'home';
   setLinks();
   if (page === 'home') renderSashti();
+  if (page === 'contact') return;
 
   var snap = fetch('data/snapshot.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(fromSnapshot);
   var live = 0, wanted = 0;
@@ -315,6 +319,7 @@
       .catch(function (e) { console.warn(name + ':', e.message); return snap.then(function (s) { return s[key]; }); });
   }
   function sourceNote() {
+    if (!wanted || !$('source')) return;
     if (live === wanted) {
       $('source').textContent = 'எல்லா விவரங்களும் Google Sheet-இலிருந்து நேரடியாக வருகின்றன.';
       return;
@@ -331,14 +336,17 @@
 
   var jobs = page === 'accounts'
     ? [tab(C.accountsTab, parseLedger, 'ledger'), C.showNamesInAccounts ? tab(C.membersTab, parseMembers, 'members') : Promise.resolve([])]
+    : page === 'members'
+    ? [tab(C.membersTab, parseMembers, 'members')]
     : [tab(C.membersTab, parseMembers, 'members'), tab(C.helpTab, parseHelp, 'help')];
 
   Promise.all(jobs).then(function (res) {
     if (page === 'accounts') {
       renderAccounts(compute(res[0]), res[1]);
+    } else if (page === 'members') {
+      renderPeople(res[0]);
     } else {
-      var shown = renderPeople(res[0]);
-      renderStats(res[1], shown);
+      renderStats(res[1], visibleMembers(res[0]));
       renderHelp(res[1]);
     }
     sourceNote();

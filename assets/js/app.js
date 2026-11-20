@@ -74,10 +74,11 @@
         iO = col(L, /spent|செலவு/), iN = col(L, /detail|note|விவர/);
     if (iI < 0 || iO < 0) throw new Error('Accounts columns not found');
     return t.rows.map(function (r) {
-      var x = { date: toDate(pick(r, iD)), in: toNum(pick(r, iI)), out: toNum(pick(r, iO)) };
+      var x = { date: toDate(pick(r, iD)), code: toStr(pick(r, iC)).toUpperCase(),
+                in: toNum(pick(r, iI)), out: toNum(pick(r, iO)), details: toStr(pick(r, iN)) };
       /* A row with a date and details but no code and no amounts = a Sashti whose
          spending amount is not known yet ("to be updated"). */
-      x.pending = !!x.date && !x.in && !x.out && !toStr(pick(r, iC)) && !!toStr(pick(r, iN));
+      x.pending = !!x.date && !x.in && !x.out && !x.code && !!x.details;
       return x;
     }).filter(function (x) { return x.in > 0 || x.out > 0 || x.pending; });
   }
@@ -108,7 +109,8 @@
   function fromSnapshot(s) {
     return {
       ledger: s.ledger.map(function (x) {
-        return { date: toDate(x.date), in: x.in || 0, out: x.out || 0, pending: !!x.pending };
+        return { date: toDate(x.date), code: x.code || '', in: x.in || 0, out: x.out || 0,
+                 details: x.details || '', pending: !!x.pending };
       }),
       members: s.members.map(function (m) {
         return { code: m.code, name: m.name, joined: toDate(m.joined), photo: m.photo || '' };
@@ -127,15 +129,17 @@
      unknown too, so those show as null ("புதுப்பிக்கப்படும்"). */
   function compute(ledger) {
     var bal = 0, cycles = [], prevSpend = false, unknown = false, firstPending = null;
-    var cur = { opening: 0, in: 0, out: 0, date: null };
+    function fresh(opening) { return { opening: opening, in: 0, out: 0, date: null, gifts: [], spends: [] }; }
+    var cur = fresh(0);
     ledger.forEach(function (r) {
       if (r.in > 0 && prevSpend) {
         cur.closing = unknown ? null : bal; cycles.push(cur);
-        cur = { opening: unknown ? null : bal, in: 0, out: 0, date: null };
+        cur = fresh(unknown ? null : bal);
         prevSpend = false;
       }
-      if (r.in > 0) cur.in += r.in;
+      if (r.in > 0) { cur.in += r.in; cur.gifts.push(r); }
       if (r.out > 0 || r.pending) {
+        cur.spends.push(r);
         if (r.pending) { cur.pending = true; unknown = true; if (!firstPending) firstPending = r.date; }
         else cur.out += r.out;
         if (!cur.date) cur.date = r.date;   // a Sashti's date = its first spending row
@@ -143,7 +147,7 @@
       }
       bal += r.in - r.out;
     });
-    if (prevSpend) { cur.closing = unknown ? null : bal; cycles.push(cur); cur = { opening: unknown ? null : bal, in: 0, out: 0 }; }
+    if (prevSpend) { cur.closing = unknown ? null : bal; cycles.push(cur); cur = fresh(unknown ? null : bal); }
     cur.closing = unknown ? null : bal;
     cycles.forEach(function (c) { if (c.pending) c.out = null; });
     var lastKnown = null;
@@ -217,23 +221,54 @@
     $('helpList').innerHTML = rows.join('');
   }
 
-  function renderCycles(R) {
-    var rows = [];
-    if (R.open.in > 0 || !R.cycles.length) {
-      rows.push('<tr class="now"><td><b>தற்போது</b><div class="sub">கடைசி சஷ்டிக்குப் பின் வந்தது</div></td>' +
-        '<td class="n opt">' + money(R.open.opening) + '</td><td class="n in">' + rupees(R.open.in) +
-        '</td><td class="n">-</td><td class="n"><b>' + money(R.open.closing) + '</b></td></tr>');
+  function giverName(code, members) {
+    if (!code) return '';
+    if (!C.showNamesInAccounts) return code;
+    for (var i = 0; i < members.length; i++) if (members[i].code === code) return code + ' · ' + niceName(members[i].name);
+    return code;
+  }
+
+  /* Accounts page: one card per Sashti; open it to see who gave and what was spent. */
+  function renderAccounts(R, members) {
+    function card(c, n, isOpen) {
+      var title = isOpen ? 'தற்போது' : n + 'வது சஷ்டி';
+      var sub = isOpen ? 'கடைசி சஷ்டிக்குப் பின் வந்தது' : dmy(c.date);
+      var gifts = c.gifts.map(function (r) {
+        var who = r.code ? esc(giverName(r.code, members)) : esc(r.details || 'நன்கொடை');
+        return '<div class="line"><span class="d">' + dmy(r.date) + '</span><span class="who">' + who +
+          '</span><span class="a">' + rupees(r.in) + '</span></div>';
+      }).join('');
+      var spends = c.spends.map(function (r) {
+        return '<div class="line"><span class="d">' + dmy(r.date) + '</span><span class="who">' +
+          esc(r.pending ? 'கல்விப் பொருள்கள்' : (r.details || 'சஷ்டி செலவு')) + '</span><span class="a">' +
+          (r.pending ? TBU : rupees(r.out)) + '</span></div>';
+      }).join('');
+      return '<details class="cyc' + (c.pending ? ' pending' : '') + '">' +
+        '<summary><span class="no">' + (isOpen ? '•' : n) + '</span>' +
+        '<span class="t"><b>' + title + '</b><span>' + sub + '</span></span>' +
+        '<span class="fig"><div><small>வரவு</small><b class="in">' + rupees(c.in) + '</b></div>' +
+        (isOpen ? '' : '<div><small>செலவு</small><b class="out">' + money(c.out) + '</b></div>') +
+        (c.closing == null ? '' : '<div><small>இருப்பு</small><b>' + money(c.closing) + '</b></div>') + '</span>' +
+        '<span class="chev"><span class="o">விவரம் பார்க்க ▾</span><span class="c">மூடு ▴</span></span></summary>' +
+        '<div class="cyc-body">' +
+        '<div class="bal"><span>முன் இருப்பு</span><span>' + money(c.opening) + '</span></div>' +
+        '<h4>வேல் நிதி வழங்கியோர் (' + c.gifts.length + ')</h4>' + (gifts || '<p class="muted small">இல்லை</p>') +
+        (isOpen ? '' : '<h4>செலவு</h4>' + spends) +
+        '<div class="bal"><span>' + (isOpen ? 'தற்போதைய இருப்பு' : 'மீதி இருப்பு') + '</span><span>' + money(c.closing) + '</span></div>' +
+        '</div></details>';
     }
-    for (var i = R.cycles.length - 1; i >= 0; i--) {
-      var c = R.cycles[i];
-      rows.push('<tr' + (c.pending ? ' class="pending"' : '') + '><td><b>' + (i + 1) + 'வது சஷ்டி</b><div class="sub">' + dmy(c.date) + '</div></td>' +
-        '<td class="n opt">' + money(c.opening) + '</td><td class="n in">' + rupees(c.in) +
-        '</td>' + (c.pending ? '<td class="n" colspan="2">' + TBU + '</td>'
-                   : '<td class="n out">' + money(c.out) + '</td><td class="n"><b>' + money(c.closing) + '</b></td>') + '</tr>');
-    }
-    document.querySelector('#cycleTbl tbody').innerHTML = rows.join('');
-    $('accNote').textContent = 'ஒவ்வொரு சஷ்டிக்கும் முன் வந்த மொத்தத் தொகையும் செய்த செலவும் மட்டும்; தனிநபர் தொகைகள் காட்டப்படுவதில்லை.' +
-      (R.firstPending ? ' ' + dmy(R.firstPending) + ' முதல் உள்ள சஷ்டிகளின் செலவுத் தொகை புதுப்பிக்கப்பட உள்ளது.' : '');
+    var html = [];
+    if (R.open.in > 0) html.push(card(R.open, 0, true));
+    for (var i = R.cycles.length - 1; i >= 0; i--) html.push(card(R.cycles[i], i + 1, false));
+    $('accList').innerHTML = html.join('');
+    $('accNote').textContent = (C.showNamesInAccounts ? '' : 'வழங்கியோர் உறுப்பினர் குறியீட்டால் குறிக்கப்படுகின்றனர். ') +
+      (R.firstPending ? dmy(R.firstPending) + ' முதல் உள்ள சஷ்டிகளின் செலவுத் தொகை புதுப்பிக்கப்பட உள்ளது.' : '');
+    var btn = $('toggleAll'), all = false;
+    btn.addEventListener('click', function () {
+      all = !all;
+      Array.prototype.forEach.call(document.querySelectorAll('.cyc'), function (d) { d.open = all; });
+      btn.textContent = all ? 'அனைத்தையும் மூடு' : 'அனைத்தையும் திற';
+    });
   }
 
   function renderPeople(members) {
@@ -268,39 +303,45 @@
 
   /* ---------- start ---------- */
 
+  var page = document.body.getAttribute('data-page') || 'home';
   setLinks();
-  renderSashti();
+  if (page === 'home') renderSashti();
 
   var snap = fetch('data/snapshot.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(fromSnapshot);
-  var live = 0;
+  var live = 0, wanted = 0;
   function tab(name, parse, key) {
+    wanted++;
     return loadTab(name).then(function (t) { var x = parse(t); live++; return x; })
       .catch(function (e) { console.warn(name + ':', e.message); return snap.then(function (s) { return s[key]; }); });
   }
-
-  Promise.all([
-    tab(C.accountsTab, parseLedger, 'ledger'),
-    tab(C.membersTab, parseMembers, 'members'),
-    tab(C.helpTab, parseHelp, 'help')
-  ]).then(function (res) {
-    var R = compute(res[0]);
-    var shown = renderPeople(res[1]);
-    renderStats(res[2], shown);
-    renderHelp(res[2]);
-    renderCycles(R);
-
-    if (live === 3) {
+  function sourceNote() {
+    if (live === wanted) {
       $('source').textContent = 'எல்லா விவரங்களும் Google Sheet-இலிருந்து நேரடியாக வருகின்றன.';
-    } else {
-      snap.then(function (s) {
-        $('source').textContent = 'சில விவரங்கள் ' + dmy(s.asOf) + ' அன்று சேமித்த பதிவிலிருந்து காட்டப்படுகின்றன.';
-        if (!live) {
-          var n = $('notice');
-          n.textContent = 'நேரடி Google Sheet இணைப்பு கிடைக்கவில்லை. ' + dmy(s.asOf) + ' அன்று சேமித்த பதிவு காட்டப்படுகிறது.';
-          n.hidden = false;
-        }
-      });
+      return;
     }
+    snap.then(function (s) {
+      $('source').textContent = 'சில விவரங்கள் ' + dmy(s.asOf) + ' அன்று சேமித்த பதிவிலிருந்து காட்டப்படுகின்றன.';
+      if (!live) {
+        var n = $('notice');
+        n.textContent = 'நேரடி Google Sheet இணைப்பு கிடைக்கவில்லை. ' + dmy(s.asOf) + ' அன்று சேமித்த பதிவு காட்டப்படுகிறது.';
+        n.hidden = false;
+      }
+    });
+  }
+
+  var jobs = page === 'accounts'
+    ? [tab(C.accountsTab, parseLedger, 'ledger'), C.showNamesInAccounts ? tab(C.membersTab, parseMembers, 'members') : Promise.resolve([])]
+    : [tab(C.membersTab, parseMembers, 'members'), tab(C.helpTab, parseHelp, 'help')];
+
+  Promise.all(jobs).then(function (res) {
+    if (page === 'accounts') {
+      renderAccounts(compute(res[0]), res[1]);
+    } else {
+      var shown = renderPeople(res[0]);
+      renderStats(res[1], shown);
+      renderHelp(res[1]);
+    }
+    sourceNote();
   }).catch(function (e) {
     var n = $('notice');
     n.textContent = 'விவரங்களைப் படிக்க முடியவில்லை. பின்னர் மீண்டும் முயலவும்.';

@@ -13,9 +13,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261120e">
+<link rel="stylesheet" href="assets/css/style.css?v=20261121a">
 </head>
-<body>
+<body data-page="home">
 
 <header class="top">
   <div class="wrap top-in">
@@ -25,6 +25,7 @@
     </a>
     <nav class="nav">
       <a href="#help">உதவிகள்</a>
+      <a class="nav-acc" href="accounts.html">கணக்கு</a>
       <a href="#members">உறுப்பினர்கள்</a>
       <a class="nav-join" href="#join">சேர</a>
     </nav>
@@ -34,16 +35,28 @@
 <main>
 
   <section class="hero">
-    <div class="wrap">
+    <div class="decor-lamps" data-decor="lamps" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <figure class="deity">
+        <picture>
+          <source srcset="assets/img/murugan-ravi-varma.webp" type="image/webp">
+          <img src="assets/img/murugan-ravi-varma.jpg" width="600" height="819" alt="ஆறுமுகப் பெருமான், வள்ளி தெய்வானையுடன் மயில் மீது. ராஜா ரவி வர்மா ஓவியம்">
+        </picture>
+      </figure>
+      <div class="hero-text">
       <p class="om">ஓம் சரவணபவ</p>
       <h1>வேல் இயக்கம்</h1>
+      <p class="yama">யாமிருக்க பயமேன்</p>
       <p class="lead">முருக பக்தர்களின் வாழ்வாதாரத் தேவைகளுக்கு உதவ, நாம் அனைவரும் ஒன்றுசேர்வோம்!
         வேல் இயக்கம் ஒரு பக்தி மற்றும் சேவை இயக்கம்.</p>
       <div class="cta">
         <a class="btn btn-gold js-join" href="#">உறுப்பினராகச் சேர</a>
         <a class="btn btn-line js-wa" href="#">WhatsApp குழு</a>
       </div>
+      </div>
+      <div class="vel-flag" data-decor="vel" aria-hidden="true"></div>
     </div>
+    <div class="decor-hills" data-decor="hills" aria-hidden="true"></div>
   </section>
 
   <div id="notice" class="notice wrap" hidden></div>
@@ -70,16 +83,10 @@
     <p class="muted">ஒவ்வொரு சஷ்டி நாளிலும், உறுப்பினர்களின் பங்களிப்பில் மாணவர்களுக்குக் கல்விப் பொருள்கள் வழங்கப்படுகின்றன.</p>
     <ol class="helplist" id="helpList"></ol>
 
-    <details class="more">
-      <summary>வரவு செலவு விவரம் <small>Accounts by Sashti</small></summary>
-      <p class="muted small" id="accNote"></p>
-      <div class="table-wrap">
-        <table class="tbl" id="cycleTbl">
-          <thead><tr><th>சஷ்டி</th><th class="n opt">முன் இருப்பு</th><th class="n">வரவு</th><th class="n">செலவு</th><th class="n">இருப்பு</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </details>
+    <a class="acc-link" href="accounts.html">
+      <span><b>வரவு செலவு கணக்கு</b><small>ஒவ்வொரு சஷ்டிக்கும் வந்த தொகை, வழங்கியோர், செலவு</small></span>
+      <span class="arrow">→</span>
+    </a>
   </section>
 
   <section class="wrap sec" id="members">
@@ -106,14 +113,17 @@
 
 <footer class="foot">
   <div class="wrap">
+    <p class="arohara">வெற்றிவேல் முருகனுக்கு அரோகரா!</p>
     <p>அன்பும் பக்தியும் உங்கள் உள்ளத்தில் நிறையட்டும். ஓம் சரவணபவ!</p>
     <p class="small muted" id="source"></p>
     <p class="small muted">தொடர்புக்கு: <a class="js-mail" href="#"></a></p>
+    <p class="tiny muted">முருகன் ஓவியம்: ராஜா ரவி வர்மா (பொதுக் களம்), <a href="https://commons.wikimedia.org/wiki/File:Murugan_by_Raja_Ravi_Varma.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></p>
   </div>
 </footer>
 
-<script src="assets/js/config.js?v=20261120e"></script>
-<script src="assets/js/panchang.js?v=20261120e"></script>
-<script src="assets/js/app.js?v=20261120e"></script>
+<script src="assets/js/config.js?v=20261121a"></script>
+<script src="assets/js/panchang.js?v=20261121a"></script>
+<script src="assets/js/decor.js?v=20261121a"></script>
+<script src="assets/js/app.js?v=20261121a"></script>
 </body>
 </html>

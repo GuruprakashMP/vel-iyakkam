@@ -2,8 +2,9 @@
 
 🌐 **https://guruprakashmp.github.io/vel-iyakkam/**
 
-One page: help given (Sashtis served, education kits, members), the help list, next Sashti, folded monthly accounts, and the members wall (A to Z).
-The site never shows what each person gave.
+Two pages:
+- `index.html`: banner (Raja Ravi Varma's Shanmukha painting, hanging lamps, Vel with the rooster flag, hills), help counts, next Sashti, the help list, and the members wall (A to Z).
+- `accounts.html`: one card per Sashti; open it to see who gave (by member code), what was spent, and the balance. A Sashti whose spending is not known yet shows "புதுப்பிக்கப்படும்".
 
 ## How the data flows
 
@@ -38,6 +39,8 @@ index.html             the page
 assets/js/config.js    sheet ID, form link, WhatsApp link, privacy switches  <- the only file to edit
 assets/js/app.js       reads the sheet, does the sums, draws the page
 assets/js/panchang.js  Sashti date calculation (sunrise at Tiruchendur)
+assets/js/decor.js     banner decorations drawn in SVG (lamps, hills, Vel and rooster flag)
+assets/img/murugan-ravi-varma.*  public-domain painting (Wikimedia Commons)
 assets/css/style.css   look (follows the phone's light/dark setting)
 data/snapshot.json     saved copy of the sheet, shown only if Google cannot be reached
 photos/VEL-0xx.jpg     member photos, named by code

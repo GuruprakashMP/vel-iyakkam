@@ -24,8 +24,10 @@ window.VI_CONFIG = {
      Their payments still count in the accounts. */
   hideMembers: [],
 
-  /* Privacy: the site never shows what each person gave.
-     Set to true to print the member code under each name on the wall. */
+  /* Accounts page: each Sashti lists its givers by member code, as in the
+     WhatsApp lists. Set to true to show the name next to the code. */
+  showNamesInAccounts: false,
+  /* Set to true to print the member code under each name on the members wall. */
   showCodesOnMembers: false,
 
   /* Sashti dates are calculated for sunrise at this place. */

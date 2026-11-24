@@ -18,7 +18,7 @@ window.VI_CONFIG = {
      e.g. photos/VEL-001.jpg. No photo = the member's initials are shown. */
   photoFolder: 'photos/',
   photoExt: '.jpg',
-  photoVersion: 7,          // raise by 1 after replacing a photo, so browsers fetch the new one
+  photoVersion: 8,          // raise by 1 after replacing a photo, so browsers fetch the new one
 
   /* Codes to leave off the members wall, e.g. ['VEL-014'].
      Their payments still count in the accounts. */

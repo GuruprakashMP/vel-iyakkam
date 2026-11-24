@@ -12,7 +12,7 @@ Open items, to check later. Tick them off (`[x]`) or tell Claude when done.
 - [ ] **15-11-2026 (Kanda Sashti):** 1 student? (The message says "அடியவர்களுக்கு", plural.) Fix the `Students` number in the `Help` tab if needed.
 
 ## Members
-- [ ] **Esakki Selvam (VEL-008):** photo still missing.
+- [x] **Esakki Selvam (VEL-008):** photo added (24-11-2026).
 - [ ] **VEL-017:** to fill the membership form; once his code is in column A of the form responses sheet he appears on the website automatically.
 
 ## Website
